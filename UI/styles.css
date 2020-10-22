@@ -1,0 +1,403 @@
+:root {
+    --main-green: #0F8152;
+    --main-yellow: #FFE057;
+    --main-color-fon: #f8faf7;
+}
+
+html {
+    font-size: 14px;
+}
+
+.body {
+    background-color: var(--main-color-fon);
+}
+
+.header-chat {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 5rem;
+
+    background-color: white;
+    z-index: 50;
+}
+
+.logo-img {
+    position: fixed;
+    left: 1rem; 
+}
+
+.authorized-user {
+    position: fixed;
+    right: 10rem; 
+    top: 2%;
+    width: 10%; 
+    height: 5%;
+
+    font-family: Open Sans;
+    font-weight: bold;
+    font-size: 1.2rem; 
+
+    display: flex;
+    align-items: center;
+}
+
+.circle-user {
+    position: fixed;
+    width: 3.5rem; 
+    height: 3.5rem; 
+    right: 5rem; 
+    top: 1rem; 
+
+    border-radius: 2rem; 
+    text-align: center;
+    background: #FFE057;
+}
+
+.nav-chat {
+    position: fixed;
+    top: 5.1rem; 
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 2.5rem;
+
+    background-color: white;
+
+    display: inline-grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    z-index: 50;
+}
+
+.user-online-menu {
+    position: relative; 
+    left: 2rem; 
+
+    font-family: Open Sans;
+    font-size: 1rem; 
+    font-weight: bold;
+    align-items: center;
+}
+
+.search {
+    position: relative;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    align-items: center;
+}
+
+.input-search {
+    border: none;
+    border-color: white;
+    border-width: 0px;
+}
+
+.filter {
+    position: relative;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.sidebar-online-user {
+    position: relative;
+    max-width: 21rem; 
+    margin-top: 7.5rem;
+    height:calc(-10rem + 100%);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.user-online-container {
+    position: relative;
+    top: 0.2rem;
+    height: 3rem;
+    width: 100%;
+    
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.circle-user-container {
+    position: absolute;
+    left: 0.2rem;
+    top: 0.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    border-radius: 2rem;
+    background: #0F8152;
+}
+
+.circle-user-container > p {
+    position: relative;
+    margin-top: 30%;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    text-align: center;
+    color: #FAF5E1;
+}
+
+.name-user {
+    position: absolute;
+    width: 50%;
+    left: 5rem;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.online-user {
+    position: absolute;
+    right: 1rem;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    color: #0F8152;
+}
+
+main {
+    float: right;
+}
+
+.msg-chat {
+    position: absolute;
+    width: 69%;
+    height: 100%;
+    top: 10rem;
+    left: 25.5rem;
+    padding: 0rem 0rem 5rem 0rem;
+    display: grid;
+}
+
+.outgoing_msg{ 
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+.my_msg_img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 2rem;
+    background: var(--main-yellow);
+    float: right;
+    display: inline-block;
+}
+
+.sent-msg {
+    padding: 0 10px 0 0;
+    min-width: 40%;
+    max-width: 60%;
+    vertical-align: top;
+    float: right;
+    display: inline-block; 
+}
+
+.sent-width-msg {
+    padding: 0.5rem;
+    box-sizing: content-box;
+    float: right;
+    display: inline-block;
+
+    border: 1px solid var(--main-green);
+    background: #FFFFFF;
+}
+
+.sent-width-msg > p {
+    padding: 0 10px 0 0px;
+    margin-bottom: 0;
+}
+
+.info-msg {
+    display: inline-flex;
+}
+
+.sender {
+    margin: 0 2rem 0 0;
+    font-weight: bold;
+}
+
+.time_date {
+    margin: 0 2rem 0 0;
+    display: block;
+
+    font-size: 1rem;
+    color: #747474;    
+}
+
+.possible-msg {
+    position: relative;
+    margin: 0;
+    display: block;
+
+    font-size: 1rem;
+    border: none;
+    background-color: white
+}
+
+.my_msg_img p {
+    position: relative;
+    margin-top: 30%;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.incoming_msg { 
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+.incoming_msg_img {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    border-radius: 2rem;
+    background: var(--main-green);
+}
+
+.incoming_msg_img > p {
+    position: relative;
+    margin-top: 30%;
+
+    font-family: Open Sans;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: #FAF5E1;
+}
+
+.received_msg {
+    display: inline-block;
+    padding: 0 0 0 0.5rem;
+    vertical-align: top;
+    min-width: 40%;
+    max-width: 60%;
+}
+
+.received_withd_msg { 
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+
+    background: #FFFFFF;
+    border: 1px solid var(--main-yellow);   
+}
+
+.text-msg {
+    box-sizing: content-box;
+    margin-bottom: 0;
+
+    font-family: Open Sans;
+    font-size: 1rem; 
+}
+
+.send-msg {
+    position: fixed;
+    left: 25rem;
+    bottom: 2.5rem;
+    height: 3rem;
+    width: 70%;
+
+    background: #FFFFFF;
+    border: 1px solid rgba(15, 129, 82, 0.4);
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+}
+
+.menu-send-msg {
+    list-style: none;
+    display: inline-flex;
+}
+
+.add-img {
+    position: absolute;
+    left: 0;
+    bottom: 0.5rem;
+    padding-left: 1rem;
+
+    opacity: 50%;
+    font-size: 1.5rem; 
+}
+
+.smile {
+    position: absolute;
+    bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    opacity: 50%;
+    font-size: 1.5rem;
+}
+
+.private-msg {
+    padding-left: 4rem;
+    width: 10rem;
+}
+
+.write-msg {
+    position: relative;
+    bottom: 0.5rem;
+    width: 200%;
+    height: 2rem;
+    padding-left: 2rem;
+
+    border: none;
+    color: black;
+    font-size: 1rem;  
+}
+
+.msg-send-btn {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 5%;
+    padding-left: 2rem;
+
+    font-size: 21px;
+    opacity: 50%;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: white;
+}
+
+.info-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+
+    font-size: 0.8rem;
+    text-align: center;
+    background-color: var(--main-color-fon);
+}
+
+.list-footer {
+    width: auto;
+    list-style: none;
+    display: inline-flex;
+}
+
+.list-footer > li {
+    width: auto;
+    padding-left: 2.5rem;
+}
+
+.font-logo {
+    font-family: satisfy;
+}
+
+
+
+
