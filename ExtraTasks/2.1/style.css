@@ -31,27 +31,31 @@ html {
 }
 
 .modal-window {
-    width: 18rem;
-    height: 13rem;
+    width: 40%;
+    height: 40%;
     padding: 1rem;
     margin-top: 5rem;
-    margin-left: calc((100% - 20rem)/2);
+    margin-left: 30%;
 
     background: white;
 }
 
 .modal-window > i {
     opacity: 50%;
-    float: right;
+    padding-left: 95%;
 }
 
 .modal-window > hr {
     opacity: 50%;
 }
 
+.modal-window > p {
+    height: 50%;
+}
+
+
 .modal-window-btn {
     text-align: right;
-    margin: 5rem 0rem 0 10rem;
 }
 
 .modal-btn {
