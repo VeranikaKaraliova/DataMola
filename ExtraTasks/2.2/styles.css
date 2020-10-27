@@ -1,0 +1,166 @@
+:root {
+    --main-indent: 10rem;
+}
+
+html {font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.fon-box {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin: 1rem var(--main-indent);
+}
+
+.content-box {
+    padding: 0.7rem;
+    margin: 1rem;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.element-box {
+    position: absolute;
+    padding: 4rem 0 0 0.5rem;
+}
+
+.element {
+    width: max-content;
+    padding: 0.4rem;
+
+    font-size: 0.8rem;
+    background-color: green;
+    color: white;
+    z-index: 20;
+}
+
+.triangle {
+    width: 0%;
+    border: 0.3rem solid transparent;
+    border-top: 0.3rem solid green;
+    border-right: 0.3rem solid green;
+}
+
+.info {
+    display: flex;
+}
+
+.photo-info {
+width: 15rem;
+height: 15rem;
+}
+
+.hotel-info-container {
+    margin: 0.5rem 1rem;
+}
+
+.hotel-info > h2{
+    margin: 0;
+    color: blue;
+}
+
+.stars {
+    display: inline;
+    color: orange;
+    font-size: 0.8rem;
+}
+
+.hotel-info > i {
+    margin: 0.3rem 0 1rem;
+    color: white;
+    background-color: orange;
+    border-color: 0.3rem solid orange;
+}
+
+.hotel-info >button {
+    border: none;
+    color: white;
+    background-color: #392FE6;
+}
+
+.recommend-info > p {
+    font-weight: bold;
+    margin: 0;
+    padding: 1rem 0;
+}
+
+.recommend {
+    display: inline-flex;
+}
+
+.recommend-info > i {
+    margin-top: 1rem;
+}
+
+.rating-hotel-box {
+    position: absolute;
+    right: var(--main-indent);
+    padding-right: 2.5rem ;
+}
+
+.rating-hotel {
+    display: flex;
+}
+
+.rating-hotel  h3 {
+    margin: 1rem 0 0 0;
+}
+
+.rating-hotel p {
+    margin: 0;
+}
+
+.num-rating {
+    padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+    border-radius: 0.5rem 0.5rem 0.5rem 0;
+    margin: 1rem 0 0 0.5rem;
+    
+    color: white;
+    background-color: #2B3475;   
+}
+
+.comfort {
+    margin: 0rem 0.5rem;
+}
+
+.comfort::after { 
+    content: attr(data-title); 
+}
+
+.comfort p {
+    margin: 0;
+}
+
+.comfort > span  {
+    color: green;
+}
+
+.box-detail-order {
+     text-align: right;
+}
+
+.detail-order p {
+    margin: 0;
+    padding: 0.2rem 0;
+
+    font-size: 1rem;
+    opacity: 80%;
+}
+
+.detail-order span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 100%;
+}
+
+.btn-detail {
+    margin: 1rem 0;
+}
+
+.btn-detail > button {
+    height: 2rem;
+    
+    border: none;
+    border-radius: 0.2em;
+    background-color: #4B6ABD;
+    color: white;
+}
