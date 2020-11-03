@@ -241,27 +241,31 @@ const fun = (function() {
                     if (index > -1) {
                         if (this.validateMessage(clone[index])) {
                             clone[index].text = element.text;
-                            //console.log(clone[index]);
                             return true; 
                         }
                     }
                 }if (element?.isPersonal !== undefined){
                     if (index > -1) {
-                        if (this.validateMessage(clone[index])) {
-                            if(element.isPersonal == true && element.to !== undefined){
-                                clone[index].isPersonal = element.isPersonal;
-                                clone[index].to = element.to;
-                                //console.log(clone[index]);
-                                return true;
-                            } if (element.isPersonal == false) {
-                                clone[index].isPersonal = element.isPersonal;
-                                delete clone[index].to;
-                                //console.log(clone[index]);
+                        if(element.isPersonal == true && element.to !== undefined){
+                            clone[index].isPersonal = element.isPersonal;
+                            clone[index].to = element.to;
+                            console.log(clone[index]);
+                            if (this.validateMessage(clone[index])) {
                                 return true;
                             }else {
                                 return false
                             }
                         }
+                        if (element.isPersonal == false) {
+                            clone[index].isPersonal = element.isPersonal;
+                            delete clone[index].to;
+                            console.log(clone[index]);
+                            if (this.validateMessage(clone[index])) {
+                                return true;
+                            } else {
+                                return false
+                            }  
+                        } 
                     }
                 }
             }
