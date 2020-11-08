@@ -129,7 +129,7 @@ const messages = [
         createdAt: new Date('2020-10-12T23:17:05'),
         author: 'Sasha',
         isPersonal: false,
-    },
+    }, 
     {
         id: '19',
         text: 'Всем хорошего вечера!',
@@ -173,32 +173,32 @@ const fun = (function() {
             },
         //Функция с сортировкой по дате, пагинацией и возможностью фильтрации сообщений по тексту или автору 
         getMessages: function (skip =0, top=0, filterConfig){
-                if (filterConfig !== undefined) {
-                    const clone = Object.assign([], messages);
-                    for(let key in filterConfig){
-                    if (filterConfig?.author !== undefined){
-                        let results = clone.filter(name => (name.author.toLowerCase().includes(filterConfig.author.toLowerCase()))) 
-                        results.sort((a, b) => a.createdAt - b.createdAt);
-                        return this.pag(skip, top, results)}
-                    if (filterConfig?.text !== undefined){
-                        let results = clone.filter(name => (name.text.toLowerCase().includes(filterConfig.text.toLowerCase()))) 
-                        results.sort((a, b) => a.createdAt - b.createdAt);
-                        return this.pag(skip, top, results)}
-                    if (filterConfig?.dataTo !== undefined){
-                        let results = clone.filter(name => {return name.createdAt < filterConfig.dataTo;}) 
-                        results.sort((a, b) => a.createdAt - b.createdAt);
-                        return this.pag(skip, top, results)}
-                    if (filterConfig?.dataFrom !== undefined){
-                        let results = clone.filter(name => {return name.createdAt > filterConfig.dataFrom;}) 
-                        results.sort((a, b) => a.createdAt - b.createdAt);
-                        console.log(results)
-                        return this.pag(skip, top, results)}
-                    } 
-                }if (filterConfig == undefined){ 
-                    const results = messages.sort((a, b) => a.createdAt - b.createdAt);
-                    return this.pag(skip, top, results)
-                }
-            },
+            if (filterConfig !== undefined) {
+                let results = Object.assign([], messages);
+                for(let key in filterConfig){
+                if (filterConfig?.author !== undefined){
+                    results = results.filter(name => (name.author.toLowerCase().includes(filterConfig.author.toLowerCase()))) 
+                    results.sort((a, b) => a.createdAt - b.createdAt);
+                    }
+                if (filterConfig?.text !== undefined){
+                    results = results.filter(name => (name.text.toLowerCase().includes(filterConfig.text.toLowerCase()))) 
+                    results.sort((a, b) => a.createdAt - b.createdAt);
+                    }
+                if (filterConfig?.dataTo !== undefined){
+                    results = results.filter(name => {return name.createdAt < filterConfig.dataTo;}) 
+                    results.sort((a, b) => a.createdAt - b.createdAt);
+                    }
+                if (filterConfig?.dataFrom !== undefined){
+                    results = results.filter(name => {return name.createdAt > filterConfig.dataFrom;}) 
+                    results.sort((a, b) => a.createdAt - b.createdAt);
+                    }
+                } return this.pag(skip, top, results)
+            };
+            if (filterConfig == undefined){ 
+                const results = messages.sort((a, b) => a.createdAt - b.createdAt);
+                return this.pag(skip, top, results)
+            }
+        },
 
         //Функция позволяющая достать сообщение по id
         getMessage: function(item){
@@ -243,7 +243,7 @@ const fun = (function() {
                             clone[index].text = element.text;
                             return true; 
                         }
-                    }
+                    }return false
                 }if (element?.isPersonal !== undefined){
                     if (index > -1) {
                         if(element.isPersonal == true && element.to !== undefined){
@@ -252,9 +252,7 @@ const fun = (function() {
                             console.log(clone[index]);
                             if (this.validateMessage(clone[index])) {
                                 return true;
-                            }else {
-                                return false
-                            }
+                            } return false
                         }
                         if (element.isPersonal == false) {
                             clone[index].isPersonal = element.isPersonal;
@@ -262,10 +260,8 @@ const fun = (function() {
                             console.log(clone[index]);
                             if (this.validateMessage(clone[index])) {
                                 return true;
-                            } else {
-                                return false
-                            }  
-                        } 
+                            } return false  
+                        } return false;
                     }
                 }
             }
@@ -289,7 +285,7 @@ const fun = (function() {
 console.log('Первые 10 сообщений', fun.getMessages(0,10));
 console.log('Следующие 10 сообщений',fun.getMessages(10,10));
 console.log('Первые 10 сообщений от автора \'Иван\'', fun.getMessages(0,10, {author: 'Иван'}));
-console.log('Первые 10 сообщений от автора\'Anastasia\' с 2020-10-12T15:11:00', fun.getMessages(0, 10,{author: 'Anastasia',dataFrom: new Date('2020-10-12T15:11:00')}));
+console.log('Первые 10 сообщений от автора\'Anastasia\' с 2020-10-12T23:01:00', fun.getMessages(0, 10,{author: 'Anastasia',dataFrom: new Date('2020-10-12T23:01:00')}));
 console.log('Первые 10 сообщений с текстом \'ещё\'', fun.getMessages(0,10, {text:'ещё'}));
 //Проверка работы функции getMessage
 console.log("В id №11 хранится сообщение:", fun.getMessage(11));
