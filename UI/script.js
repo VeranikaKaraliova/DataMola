@@ -166,13 +166,13 @@ const fun = (function() {
                             var resultsSlice = results.slice(skip, results.length)
                         }
                     } else { 
-                        alert ('error');
+                        return false;
                     }
                 }
                 return resultsSlice;
             },
         //Функция с сортировкой по дате, пагинацией и возможностью фильтрации сообщений по тексту или автору 
-        getMessages: function (skip =0, top=0, filterConfig){
+        getMessages: function (skip =0, top=10, filterConfig){
             if (filterConfig !== undefined) {
                 let results = Object.assign([], messages);
                 for(let key in filterConfig){
@@ -249,7 +249,6 @@ const fun = (function() {
                         if(element.isPersonal == true && element.to !== undefined){
                             clone[index].isPersonal = element.isPersonal;
                             clone[index].to = element.to;
-                            console.log(clone[index]);
                             if (this.validateMessage(clone[index])) {
                                 return true;
                             } return false
@@ -257,7 +256,6 @@ const fun = (function() {
                         if (element.isPersonal == false) {
                             clone[index].isPersonal = element.isPersonal;
                             delete clone[index].to;
-                            console.log(clone[index]);
                             if (this.validateMessage(clone[index])) {
                                 return true;
                             } return false  
@@ -282,9 +280,12 @@ const fun = (function() {
 }());
 
 //Проверка работы функции getMessages
-console.log('Первые 10 сообщений', fun.getMessages(0,10));
+console.log('Первые 10 сообщений', fun.getMessages());
 console.log('Следующие 10 сообщений',fun.getMessages(10,10));
+console.log('Если данные введены некорректно', fun.getMessages(1,2));
 console.log('Первые 10 сообщений от автора \'Иван\'', fun.getMessages(0,10, {author: 'Иван'}));
+console.log('Поиск по автору \'Иван\' и тексту \'привет\'', fun.getMessages(0,10, {author: 'Иван', text: 'привет'}));
+console.log('Следующие 10 сообщений по дате с - по', fun.getMessages(10,10, {dataFrom: new Date('2020-10-12T23:06:01'), dataTo: new Date('2020-10-12T23:19:00')}));
 console.log('Первые 10 сообщений от автора\'Anastasia\' с 2020-10-12T23:01:00', fun.getMessages(0, 10,{author: 'Anastasia',dataFrom: new Date('2020-10-12T23:01:00')}));
 console.log('Первые 10 сообщений с текстом \'ещё\'', fun.getMessages(0,10, {text:'ещё'}));
 //Проверка работы функции getMessage
@@ -317,7 +318,7 @@ console.log('Все данные соответствуют условиям и 
 //Проверка работы функции editMessage
 console.log('Успешно изменен текст сообщения',fun.editMessage(5, {text: 'Уже час ночи'}))
 console.log('Сообщение изменено на персональное и добавлен получатель', fun.editMessage(7, {isPersonal: true, to:'Happy user'}))
-console.log('Сообщение изменено на персональное и НЕ добавлен получатель', fun.editMessage(7, {isPersonal: true}))
+console.log('Сообщение изменено на персональное, но НЕ добавлен получатель', fun.editMessage(7, {isPersonal: true}))
 console.log('Сообщение изменено на общее', fun.editMessage(7, {isPersonal: false}))
 //Проверка работы функции editMessage: удаляем 5 обект массива (с индексом №4)
 console.log('Сообщение успешно удалено', fun.removeMessage(5));
