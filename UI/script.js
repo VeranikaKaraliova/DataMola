@@ -152,25 +152,13 @@ const fun = (function() {
     return {
         //Вынесен в отдельную функцию повторяющийся функционал (пагинация)
         pag: function (skip=0, top=10, results) {
-                if (skip === 0 && top === 10){
-                    if (results.length >= top){
-                        var resultsSlice = results.slice(skip, top);
-                    } else {
-                        var resultsSlice = results.slice(skip, results.length)
-                    }
-                } else{
-                    if (skip> 0 && skip%10 === 0 && top === 10){
-                        if (results.length >= top){
-                            var resultsSlice = results.slice((skip-1), (skip+9));
-                        } else {
-                            var resultsSlice = results.slice(skip, results.length)
-                        }
-                    } else { 
-                        return false;
-                    }
-                }
-                return resultsSlice;
-            },
+            if (results.length > top) {
+                console.log('Длина массива',results.length)
+                return results.slice(skip, skip+top);
+            }else{ 
+            console.log('Длина массива',results.length)
+            return results.splice(skip, results.length);}
+        },
         //Функция с сортировкой по дате, пагинацией и возможностью фильтрации сообщений по тексту или автору 
         getMessages: function (skip =0, top=10, filterConfig){
             if (filterConfig !== undefined) {
@@ -192,7 +180,8 @@ const fun = (function() {
                     results = results.filter(name => {return name.createdAt > filterConfig.dataFrom;}) 
                     results.sort((a, b) => a.createdAt - b.createdAt);
                     }
-                } return this.pag(skip, top, results)
+                }  
+                return this.pag(skip, top, results)
             };
             if (filterConfig == undefined){ 
                 const results = messages.sort((a, b) => a.createdAt - b.createdAt);
@@ -282,7 +271,9 @@ const fun = (function() {
 //Проверка работы функции getMessages
 console.log('Первые 10 сообщений', fun.getMessages());
 console.log('Следующие 10 сообщений',fun.getMessages(10,10));
-console.log('Если данные введены некорректно', fun.getMessages(1,2));
+console.log('Вывод 13 сообщений с 4', fun.getMessages(4,13));
+console.log('Вывод 5 сообщений с 11', fun.getMessages(11,5));
+console.log('Вывод 5 сообщений с 17, но т.к. в массиве сообщений меньше, то выводит максимально возможное число', fun.getMessages(17,5));
 console.log('Первые 10 сообщений от автора \'Иван\'', fun.getMessages(0,10, {author: 'Иван'}));
 console.log('Поиск по автору \'Иван\' и тексту \'привет\'', fun.getMessages(0,10, {author: 'Иван', text: 'привет'}));
 console.log('Следующие 10 сообщений по дате с - по', fun.getMessages(10,10, {dataFrom: new Date('2020-10-12T23:06:01'), dataTo: new Date('2020-10-12T23:19:00')}));
