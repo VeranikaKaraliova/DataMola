@@ -1,315 +1,398 @@
-const messages = [
-    {
-        id: '1',
-        text: 'Привет!',
-        createdAt: new Date('2020-10-11T23:01:10'),
-        author: 'Иванов Иван',
-        isPersonal: true,
-        to: 'Петров Петр'
-    },
-    {
-        id: '2',
-        text: 'Как дела?',
-        createdAt: new Date('2020-10-11T23:01:52'),
-        author: 'Петров Петр',
-        isPersonal: false
-    },
-    {
-        id: '3',
-        text: 'Я думаю приготовить что-нибудь особенное сегодня вечером. Что посоветуете?',
-        createdAt: new Date('2020-10-12T23:02:15'),
-        author: 'Happy user',
-        isPersonal: false
-    },
-    {
-        id: '4',
-        text: 'Нужно подумать...',
-        createdAt: new Date('2020-10-12T23:03:14'),
-        author: 'Anastasia',
-        isPersonal: false
-    },
-    {
-        id: '5',
-        text: 'ты любишь  мясо?',
-        createdAt: new Date('2020-10-12T23:04:37'),
-        author: 'Иван Иванович',
-        isPersonal: true,
-        to: 'Happy User'
-    },
-    {
-        id: '6',
-        text: 'Я скорее вегетарианец. Я предпочитаю фрукты и овощи.В особенности мне нравятся блюда из тыквы или цукини. Ещё я люблю фруктовые салаты.',
-        createdAt: new Date('2020-10-12T23:06:01'),
-        author: 'Happy User',
-        isPersonal: true,
-        to: 'Иван Иванович'
-    },
-    {
-        id: '7',
-        text: 'Как насчет сезонных салатов? Например, летом мне нравится есть салаты из свежих помидоров и огурцов с луком и различными приправами.',
-        createdAt: new Date('2020-10-12T23:06:15'),
-        author: 'Mary',
-        isPersonal: false
-    },
-    {
-        id: '8',
-        text: 'Вкусно получается суп из цукини и салат из свежих овощей с итальянским соусом',
-        createdAt: new Date('2020-10-12T23:07:41'),
-        author: 'Sasha',
-        isPersonal: false
-    },
-    {
-        id: '9',
-        text: 'Что лучше приготовить на десерт?',
-        createdAt: new Date('2020-10-12T23:10:11'),
-        author: 'Vika',
-        isPersonal: false
-    },
-    {
-        id: '10',
-        text: 'Я бы хотела попробовать торт с корицей и ирландским кремом.',
-        createdAt: new Date('2020-10-12T23:00:00'),
-        author: 'Anastasia',
-        isPersonal: false
-    },
-    {
-        id: '11',
-        text: 'Звучит вкусно.',
-        createdAt: new Date('2020-10-12T23:12:12'),
-        author: 'Happy User',
-        isPersonal: false
-    },
-    {
-        id: '12',
-        text: 'А у меня сегодня на ужин паста с жареным лососем.',
-        createdAt: new Date('2020-10-12T23:13:11'),
-        author: 'Sasha',
-        isPersonal: false
-    },
-    {
-        id: '13',
-        text: 'Ты сама готовила?',
-        createdAt: new Date('2020-10-12T23:14:16'),
-        author: 'Happy user',
-        isPersonal: true,
-        to: 'Sasha'
-    },
-    {
-        id: '14',
-        text: 'Да, сама.',
-        createdAt: new Date('2020-10-12T23:15:18'),
-        author: 'Sasha',
-        isPersonal: true,
-        to: 'Happy user',
-    },
-    {
-        id: '15',
-        text: 'Круто!',
-        createdAt: new Date('2020-10-12T23:14:21'),
-        author: 'Mary',
-        isPersonal: false,
-    },
-    {
-        id: '16',
-        text: 'Вау!',
-        createdAt: new Date('2020-10-12T23:14:02'),
-        author: 'Vika',
-        isPersonal: false,
-    },
-    {
-        id: '17',
-        text: 'Great!',
-        createdAt: new Date('2020-10-12T23:16:03'),
-        author: 'Иван Иванович',
-        isPersonal: false,
-    },
-    {
-        id: '18',
-        text: 'Да, лосось полезен для здоровья.',
-        createdAt: new Date('2020-10-12T23:17:05'),
-        author: 'Sasha',
-        isPersonal: false,
-    }, 
-    {
-        id: '19',
-        text: 'Всем хорошего вечера!',
-        createdAt: new Date('2020-10-12T23:18:23'),
-        author: 'Sasha',
-        isPersonal: false,
-    },
-    {
-        id: '20',
-        text: 'Пока!',
-        createdAt: new Date('2020-10-12T23:18:11'),
-        author: 'Happy User',
-        isPersonal: false,
+const secret = new WeakMap();
+class Messages {
+  constructor(text, author, isPersonal, to) {
+    secret.set(this, { _id: `${+new Date()}` });
+    secret.set(this, { _createdAt: new Date() });
+    secret.set(this, { _author: author });
+    this.text = text;
+    this.isPersonal = isPersonal;
+    this.to = to;
+  }
+
+  get id() {
+    return secret.get(this)._id = `${+new Date()}`;
+  }
+
+  get createdAt() {
+    return secret.get(this)._createdAt = new Date();
+  }
+
+  get author() {
+    return secret.get(this)._author;
+  }
+
+  set author(author) {
+    secret.get(this)._author = author;
+  }
+}
+
+class MessageList {
+  constructor(arrMsg, user) {
+    this.arrMsg = arrMsg;
+    secret.set(this, { _user: user });
+    this.results = [];
+    this.item = null;
+    this.messagesId = {};
+    this.mesgList = [];
+    this.messagesError = [];
+  }
+
+  get user() {
+    return secret.get(this)._user;
+  }
+
+  set user(user) {
+    return secret.get(this)._user = user;
+  }
+
+  static validate(msg) {
+    if (typeof msg.text === 'string'
+        && msg.text.length <= 200
+        && typeof msg.isPersonal === 'boolean'
+        && ((msg.isPersonal === true && typeof msg.to === 'string')
+        || (msg.isPersonal === false && typeof msg.to === 'undefined'))) {
+      return true;
     }
+    return false;
+  }
+
+  addAll() {
+    for (const item of this.arrMsg) {
+      if (this.constructor.validate(item) === true) {
+        this._id = item.id;
+        this.text = item.text;
+        this._createdAt = item.createdAt;
+        this._author = item.author;
+        this.isPersonal = item.isPersonal;
+        this.to = item.to;
+        this.mesgList.push(item);
+      } else {
+        this.messagesError.push(item);
+      }
+    } return this.messagesError;
+  }
+
+  clear() {
+    this.arrMsg.splice(0, this.arrMsg.length);
+    return this.arrMsg;
+  }
+
+  pag(skip, top, results) {
+    if (this.results.length > top) {
+      console.log('Длина массива', this.results.length);
+      return this.results.slice(skip, skip + top);
+    }
+    console.log('Длина массива', this.results.length);
+    return this.results.splice(skip, this.results.length);
+  }
+
+  getPage(skip = 0, top = 0, filterConfig) {
+    if (filterConfig !== undefined) {
+      this.results = Object.assign([], this.mesgList);
+      for (const key in filterConfig) {
+        if (filterConfig?.author !== undefined) {
+          this.results = this.results.filter((name) => (name.author.toLowerCase().includes(filterConfig.author.toLowerCase())));
+        }
+        if (filterConfig?.text !== undefined) {
+          this.results = this.results.filter((name) => (name.text.toLowerCase().includes(filterConfig.text.toLowerCase())));
+        }
+        if (filterConfig?.dataTo !== undefined) {
+          this.results = this.results.filter((name) => name.createdAt < filterConfig.dataTo);
+        }
+        if (filterConfig?.dataFrom !== undefined) {
+          this.results = this.results.filter((name) => name.createdAt > filterConfig.dataFrom);
+        }
+      } this.results.sort((a, b) => a.createdAt - b.createdAt);
+    }
+    if (filterConfig === undefined || filterConfig === null) {
+      this.results = this.mesgList.sort((a, b) => a.createdAt - b.createdAt);
+    }
+    if (secret.get(this)._user !== undefined) {
+      this.results = this.results.filter((name) => name.author === secret.get(this)._user
+            || name.to === secret.get(this)._user
+            || name.to === undefined);
+    } else {
+      this.results = this.results.filter((name) => name.to === undefined);
+    }
+    return this.pag(skip, top, this.results);
+  }
+
+  get id() {
+    this.messagesId = this.mesgList.find((name) => name.id == this.item);
+    return this.messagesId.text;
+  }
+
+  add(msg) {
+    if (this._user !== undefined && this.constructor.validate(msg) === true) {
+      msg.id = `${+new Date()}`;
+      msg.createdAt = new Date();
+      msg.author = this._user;
+      this.mesgList.push(msg);
+      return true;
+    } return false;
+  }
+
+  editMessage(id, element) {
+    const clone = Object.assign([], this.mesgList);
+    const index = clone.findIndex((item) => item.id == id);
+    if (secret.get(this)._user === clone[index].author) {
+      if (element?.text !== undefined) {
+        if (index > -1) {
+          console.log('Текст сообщения до редактирования:', clone[index].text);
+          if (this.constructor.validate(clone[index])) {
+            clone[index].text = element.text;
+            console.log('Текст сообщения после редактирования:', clone[index].text);
+            return true;
+          }
+        }
+      } if (element?.isPersonal !== undefined) {
+        if (index > -1) {
+          if (element.isPersonal === true && element.to !== undefined) {
+            console.log('Данные сообщения до редактирования:', clone[index].isPersonal, clone[index].to);
+            clone[index].isPersonal = element.isPersonal;
+            clone[index].to = element.to;
+            if (this.constructor.validate(clone[index])) {
+              console.log('Данные сообщения после редактирования:', clone[index].isPersonal, clone[index].to);
+              return true;
+            } return false;
+          }
+          if (element.isPersonal == false) {
+            console.log('Данные сообщения до редактирования: isPersonal =', clone[index].isPersonal, 'to =', clone[index].to);
+            clone[index].isPersonal = element.isPersonal;
+            delete clone[index].to;
+            if (this.constructor.validate(clone[index])) {
+              console.log('Данные сообщения после редактирования: isPersonal =', clone[index].isPersonal);
+              return true;
+            } return false;
+          } return false;
+        }
+      }
+    } else {
+      return false;
+    }
+  }
+
+  remove(id) {
+    const clone = Object.assign([], this.mesgList);
+    const index = clone.findIndex((item) => item.id == id);
+    if (secret.get(this)._user === clone[index].author && index > -1) {
+      clone.splice(index, 1);
+      return true;
+    } return false;
+  }
+}
+
+const arr = [
+  {
+    id: '1',
+    text: 'Привет!',
+    createdAt: new Date('2020-10-11T23:01:10'),
+    author: 'Иванов Иван',
+    isPersonal: true,
+    to: 'Петров Петр',
+  },
+  {
+    id: '2',
+    text: 'Как дела?',
+    createdAt: new Date('2020-10-11T23:01:52'),
+    author: 'Петров Петр',
+    isPersonal: false,
+  },
+  {
+    id: '3',
+    text: 'Я думаю приготовить что-нибудь особенное сегодня вечером. Что посоветуете?',
+    createdAt: new Date('2020-10-12T23:02:15'),
+    author: 'Happy user',
+    isPersonal: false,
+  },
+  {
+    id: '4',
+    text: 'Нужно подумать...',
+    createdAt: new Date('2020-10-12T23:03:14'),
+    author: 'Anastasia',
+    isPersonal: false,
+  },
+  {
+    id: '5',
+    text: 'ты любишь  мясо?',
+    createdAt: new Date('2020-10-12T23:04:37'),
+    author: 'Иван Иванович',
+    isPersonal: true,
+    to: 'Happy User',
+  },
+  {
+    id: '6',
+    text: 'Я скорее вегетарианец. Я предпочитаю фрукты и овощи.В особенности мне нравятся блюда из тыквы или цукини. Ещё я люблю фруктовые салаты.',
+    createdAt: new Date('2020-10-12T23:06:01'),
+    author: 'Happy User',
+    isPersonal: true,
+    to: 'Иван Иванович',
+  },
+  {
+    id: '7',
+    text: 'Как насчет сезонных салатов? Например, летом мне нравится есть салаты из свежих помидоров и огурцов с луком и различными приправами.',
+    createdAt: new Date('2020-10-12T23:06:15'),
+    author: 'Mary',
+    isPersonal: false,
+  },
+  {
+    id: '8',
+    text: 'Вкусно получается суп из цукини и салат из свежих овощей с итальянским соусом',
+    createdAt: new Date('2020-10-12T23:07:41'),
+    author: 'Sasha',
+    isPersonal: false,
+  },
+  {
+    id: '9',
+    text: 'Что лучше приготовить на десерт?',
+    createdAt: new Date('2020-10-12T23:10:11'),
+    author: 'Vika',
+    isPersonal: false,
+  },
+  {
+    id: '10',
+    text: 'Я бы хотела попробовать торт с корицей и ирландским кремом.',
+    createdAt: new Date('2020-10-12T23:00:00'),
+    author: 'Anastasia',
+    isPersonal: false,
+  },
+  {
+    id: '11',
+    text: 'Звучит вкусно.',
+    createdAt: new Date('2020-10-12T23:12:12'),
+    author: 'Happy User',
+    isPersonal: false,
+  },
+  {
+    id: '12',
+    text: 'А у меня сегодня на ужин паста с жареным лососем.',
+    createdAt: new Date('2020-10-12T23:13:11'),
+    author: 'Sasha',
+    isPersonal: false,
+  },
+  {
+    id: '13',
+    text: 'Ты сама готовила?',
+    createdAt: new Date('2020-10-12T23:14:16'),
+    author: 'Happy user',
+    isPersonal: true,
+    to: 'Sasha',
+  },
+  {
+    id: '14',
+    text: 'Да, сама.',
+    createdAt: new Date('2020-10-12T23:15:18'),
+    author: 'Sasha',
+    isPersonal: true,
+    to: 'Happy user',
+  },
+  {
+    id: '15',
+    text: 'Круто!',
+    createdAt: new Date('2020-10-12T23:14:21'),
+    author: 'Mary',
+    isPersonal: false,
+  },
+  {
+    id: '16',
+    text: 'Вау!',
+    createdAt: new Date('2020-10-12T23:14:02'),
+    author: 'Vika',
+    isPersonal: false,
+  },
+  {
+    id: '17',
+    text: 'Great!',
+    createdAt: new Date('2020-10-12T23:16:03'),
+    author: 'Иван Иванович',
+    isPersonal: false,
+  },
+  {
+    id: '18',
+    text: 'Да, лосось полезен для здоровья.',
+    createdAt: new Date('2020-10-12T23:17:05'),
+    author: 'Sasha',
+    isPersonal: false,
+  },
+  {
+    id: '19',
+    text: 'Всем хорошего вечера!',
+    createdAt: new Date('2020-10-12T23:18:23'),
+    author: 'Sasha',
+    isPersonal: false,
+  },
+  {
+    id: '20',
+    text: 'Пока!',
+    createdAt: new Date('2020-10-12T23:18:11'),
+    author: 'Happy User',
+    isPersonal: false,
+  },
+  {
+    id: '21',
+    text: 'Привет!',
+    createdAt: new Date('2020-10-11T23:01:10'),
+    author: 'Иванов Иван',
+    isPersonal: true,
+  },
 ];
 
-let logAuthor = 'Veronika';
+// Создание экземпляра класса Messages и проверка
+const msg1 = new Messages('hi', 'Veronika', false);
+console.log('Сообщение:', msg1);
+console.log('Id сообщения:', msg1.id);
+console.log('Дата сообщения:', msg1.createdAt);
 
-const fun = (function() {   
-    return {
-        //Вынесен в отдельную функцию повторяющийся функционал (пагинация)
-        pag: function (skip=0, top=10, results) {
-            if (results.length > top) {
-                console.log('Длина массива',results.length)
-                return results.slice(skip, skip+top);
-            }else{ 
-            console.log('Длина массива',results.length)
-            return results.splice(skip, results.length);}
-        },
-        //Функция с сортировкой по дате, пагинацией и возможностью фильтрации сообщений по тексту или автору 
-        getMessages: function (skip =0, top=10, filterConfig){
-            if (filterConfig !== undefined) {
-                let results = Object.assign([], messages);
-                for(let key in filterConfig){
-                if (filterConfig?.author !== undefined){
-                    results = results.filter(name => (name.author.toLowerCase().includes(filterConfig.author.toLowerCase()))) 
-                    results.sort((a, b) => a.createdAt - b.createdAt);
-                    }
-                if (filterConfig?.text !== undefined){
-                    results = results.filter(name => (name.text.toLowerCase().includes(filterConfig.text.toLowerCase()))) 
-                    results.sort((a, b) => a.createdAt - b.createdAt);
-                    }
-                if (filterConfig?.dataTo !== undefined){
-                    results = results.filter(name => {return name.createdAt < filterConfig.dataTo;}) 
-                    results.sort((a, b) => a.createdAt - b.createdAt);
-                    }
-                if (filterConfig?.dataFrom !== undefined){
-                    results = results.filter(name => {return name.createdAt > filterConfig.dataFrom;}) 
-                    results.sort((a, b) => a.createdAt - b.createdAt);
-                    }
-                }  
-                return this.pag(skip, top, results)
-            };
-            if (filterConfig == undefined){ 
-                const results = messages.sort((a, b) => a.createdAt - b.createdAt);
-                return this.pag(skip, top, results)
-            }
-        },
+// Создание экземпляра класса MessageList и проверка
+const getMes1 = new MessageList(arr, 'Mary');
+const getMes2 = new MessageList(arr);
+const getMes3 = new MessageList(arr, 'Sasha');
+getMes2.addAll(arr);
+getMes3.addAll(arr);
 
-        //Функция позволяющая достать сообщение по id
-        getMessage: function(item){
-            let messagesId = messages.find(name => name.id == item)
-            return messagesId.text
-        },
+// Массив сообщений, которые не прошли валидацию
+console.log('Массив сообщений, которые не прошли валидацию:', getMes1.addAll(arr));
 
-        //Проверка объекта msg на валидность
-        validateMessage: function (msg){
-            if (typeof msg.text === 'string' 
-            && msg.text.length <=200
-            && typeof msg.isPersonal === 'boolean'
-            && ((msg.isPersonal === true && typeof msg.to === 'string') 
-            || (msg.isPersonal === false &&typeof msg.to === "undefined"))){
-                return true
-            } else {
-                return false
-            }
-        },
+// Проверка работы метода getPage
+console.log('Первые 10 сообщений, которые может видеть только Mary:', getMes1.getPage(0, 10));
+console.log('Следующие 10 сообщений, которые может видеть только гость', getMes2.getPage(10, 10));
+console.log('Вывод 11 сообщений с 4', getMes1.getPage(4, 11));
+console.log('Вывод 5 сообщений с 9', getMes1.getPage(9, 5));
+console.log('Вывод 5 сообщений с 12, но т.к. в массиве сообщений меньше, то выводит максимально возможное число', getMes1.getPage(12, 5));
+console.log('Первые 10 сообщений от автора \'Иван\', которые видно только Mary:', getMes1.getPage(0, 10, { author: 'Иван' }));
+console.log('Поиск по автору \'Happy user\' и тексту \'ты сама\'', getMes3.getPage(0, 10, { author: 'Happy user', text: 'ты сама' }));
+console.log('Первые 3 сообщения по дате с - по', getMes2.getPage(0, 3, { dataFrom: new Date('2020-10-12T23:06:01'), dataTo: new Date('2020-10-12T23:19:00') }));
+console.log('Первые 10 сообщений от автора\'Anastasia\' с 2020-10-12T23:01:00', getMes1.getPage(0, 10, { author: 'Anastasia', dataFrom: new Date('2020-10-12T23:01:00') }));
+console.log('Первые 10 сообщений с текстом \'ещё\'(такое сообщение есть, но его не видно,т.к. оно приватное)', getMes1.getPage(0, 10, { text: 'ещё' }));
 
-        //Добавление сообщения в массив, если успешно пройдена валидация
-        addMessage: function(msg){
-            if (this.validateMessage(msg) === true) {
-                msg.id = `${+new Date()}`;
-                msg.createdAt = new Date();
-                msg.author = logAuthor;
-                messages.push(msg);
-                return true;
-            } else {
-                return false;
-            }
-        },
+// проверка работы метода, позволяющего узнать текст сообщения по id
+getMes3.item = 11;
+console.log('В id №11 хранится сообщение:', getMes3.id);
 
-        //Поиск сообщения по id и изменение его текста
-        editMessage: function(id, element){
-            const clone = Object.assign([], messages);
-            let index = clone.findIndex(item => item.id == id);
-            for(let key in element){
-                if (element?.text !== undefined){
-                    if (index > -1) {
-                        if (this.validateMessage(clone[index])) {
-                            clone[index].text = element.text;
-                            return true; 
-                        }
-                    }return false
-                }if (element?.isPersonal !== undefined){
-                    if (index > -1) {
-                        if(element.isPersonal == true && element.to !== undefined){
-                            clone[index].isPersonal = element.isPersonal;
-                            clone[index].to = element.to;
-                            if (this.validateMessage(clone[index])) {
-                                return true;
-                            } return false
-                        }
-                        if (element.isPersonal == false) {
-                            clone[index].isPersonal = element.isPersonal;
-                            delete clone[index].to;
-                            if (this.validateMessage(clone[index])) {
-                                return true;
-                            } return false  
-                        } return false;
-                    }
-                }
-            }
-        },
-
-        //Функция, позволяющая удалить сообщение по введенному id
-        removeMessage: function(id){
-            const clone = Object.assign([], messages);
-            let index = clone.findIndex(item => item.id == id);
-            if (index > -1) {
-                clone.splice(index, 1);
-                return true;
-            } else {
-                return false;
-            };
-        },
-    }
-}());
-
-//Проверка работы функции getMessages
-console.log('Первые 10 сообщений', fun.getMessages());
-console.log('Следующие 10 сообщений',fun.getMessages(10,10));
-console.log('Вывод 13 сообщений с 4', fun.getMessages(4,13));
-console.log('Вывод 5 сообщений с 11', fun.getMessages(11,5));
-console.log('Вывод 5 сообщений с 17, но т.к. в массиве сообщений меньше, то выводит максимально возможное число', fun.getMessages(17,5));
-console.log('Первые 10 сообщений от автора \'Иван\'', fun.getMessages(0,10, {author: 'Иван'}));
-console.log('Поиск по автору \'Иван\' и тексту \'привет\'', fun.getMessages(0,10, {author: 'Иван', text: 'привет'}));
-console.log('Следующие 10 сообщений по дате с - по', fun.getMessages(10,10, {dataFrom: new Date('2020-10-12T23:06:01'), dataTo: new Date('2020-10-12T23:19:00')}));
-console.log('Первые 10 сообщений от автора\'Anastasia\' с 2020-10-12T23:01:00', fun.getMessages(0, 10,{author: 'Anastasia',dataFrom: new Date('2020-10-12T23:01:00')}));
-console.log('Первые 10 сообщений с текстом \'ещё\'', fun.getMessages(0,10, {text:'ещё'}));
-//Проверка работы функции getMessage
-console.log("В id №11 хранится сообщение:", fun.getMessage(11));
-//Проверка работы функции validateMessage, если все данные введены корректно 
-console.log('Все данные соответствуют условиям, поэтому ответ', fun.validateMessage({
-    text: 'Пока!',
-    isPersonal: true,
-    to: 'Hanna',
+// Проверка работы метода add
+console.log('Введено персональное сообщение, но не указан получатель, поэтому сообщение не добавлено в массив', getMes1.add({
+  text: 'Пока!',
+  isPersonal: true,
 }));
-console.log('Все данные соответствуют условиям, поэтому ответ', fun.validateMessage({
-    text: 'Пока!',
-    isPersonal: false,
+console.log('Все данные соответствуют условиям и сообщение добавлено в массив', getMes1.add({
+  text: 'Пока!',
+  isPersonal: false,
 }));
-//Проверка работы функции validateMessage, если допущена ошибка (персональное сообщение, но нет получателя)
-console.log('Персональное сообщение, но нет получателя, поэтому ответ', fun.validateMessage({
-    text: 'Пока!',
-    isPersonal: true,
+console.log('Пользователь не авторизован, поэтому:', getMes2.add({
+  text: 'Пока!',
+  isPersonal: false,
 }));
-//Проверка работы функции addMessage
-console.log('Введено персональное сообщение, но не указан получатель, поэтому сообщение не добавлено в массив', fun.addMessage({
-    text: 'Пока!',
-    isPersonal: true,
-}));
-console.log('Все данные соответствуют условиям и сообщение добавлено в массив', fun.addMessage({
-    text: 'Пока!',
-    createdAt: new Date('2020-10-12T23:00:00'),
-    isPersonal: false,
-}));
-//Проверка работы функции editMessage
-console.log('Успешно изменен текст сообщения',fun.editMessage(5, {text: 'Уже час ночи'}))
-console.log('Сообщение изменено на персональное и добавлен получатель', fun.editMessage(7, {isPersonal: true, to:'Happy user'}))
-console.log('Сообщение изменено на персональное, но НЕ добавлен получатель', fun.editMessage(7, {isPersonal: true}))
-console.log('Сообщение изменено на общее', fun.editMessage(7, {isPersonal: false}))
-//Проверка работы функции editMessage: удаляем 5 обект массива (с индексом №4)
-console.log('Сообщение успешно удалено', fun.removeMessage(5));
+
+// Проверка работы метода edit
+console.log('Пользователь пытается отредактировать не свое сообщение', getMes1.editMessage(5, { text: 'Хочу зефирку' }));
+console.log('Успешно изменен текст сообщения, т.к. это автор этого сообщения', getMes3.editMessage(14, { text: 'Хочу зефирку' }));
+console.log('Сообщение изменено на персональное и добавлен получатель', getMes1.editMessage(7, { isPersonal: true, to: 'Happy user' }));
+console.log('Сообщение изменено на персональное и НЕ добавлен получатель', getMes1.editMessage(15, { isPersonal: true }));
+console.log('Сообщение изменено на общее', getMes1.editMessage(7, { isPersonal: false }));
+
+//  Проверка работы метода remove
+console.log('Сообщение удалено:', getMes1.remove(7));
+console.log('Сообщение Не удалено, т.к. не принадлежит данному автору:', getMes1.remove(13));
+
+//  Проверка работы метода clear
+console.log('Содержимое массива удалено', getMes1.clear());
