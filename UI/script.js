@@ -28,8 +28,8 @@ class Messages {
 
 class MessageList {
   constructor(arrMsg, user) {
-    this.arrMsg = arrMsg;
-    secret.set(this, { _user: user });
+    this._arrMsg = arrMsg;
+    this._user = user;
     this.results = [];
     this.item = null;
     this.messagesId = {};
@@ -38,11 +38,11 @@ class MessageList {
   }
 
   get user() {
-    return secret.get(this)._user;
+    return this._user;
   }
 
   set user(user) {
-    return secret.get(this)._user = user;
+    this._user = user.trim().toLowerCase();
   }
 
   static validate(msg) {
@@ -57,7 +57,7 @@ class MessageList {
   }
 
   addAll() {
-    for (const item of this.arrMsg) {
+    for (const item of this._arrMsg) {
       if (this.constructor.validate(item) === true) {
         this._id = item.id;
         this.text = item.text;
@@ -73,8 +73,8 @@ class MessageList {
   }
 
   clear() {
-    this.arrMsg.splice(0, this.arrMsg.length);
-    return this.arrMsg;
+    this._arrMsg = [];
+    return this._arrMsg;
   }
 
   pag(skip, top, results) {
@@ -90,16 +90,16 @@ class MessageList {
     if (filterConfig !== undefined) {
       this.results = Object.assign([], this.mesgList);
       for (const key in filterConfig) {
-        if (filterConfig?.author !== undefined) {
+        if (filterConfig?.author) {
           this.results = this.results.filter((name) => (name.author.toLowerCase().includes(filterConfig.author.toLowerCase())));
         }
-        if (filterConfig?.text !== undefined) {
+        if (filterConfig?.text) {
           this.results = this.results.filter((name) => (name.text.toLowerCase().includes(filterConfig.text.toLowerCase())));
         }
-        if (filterConfig?.dataTo !== undefined) {
+        if (filterConfig?.dataTo) {
           this.results = this.results.filter((name) => name.createdAt < filterConfig.dataTo);
         }
-        if (filterConfig?.dataFrom !== undefined) {
+        if (filterConfig?.dataFrom) {
           this.results = this.results.filter((name) => name.createdAt > filterConfig.dataFrom);
         }
       } this.results.sort((a, b) => a.createdAt - b.createdAt);
@@ -107,9 +107,9 @@ class MessageList {
     if (filterConfig === undefined || filterConfig === null) {
       this.results = this.mesgList.sort((a, b) => a.createdAt - b.createdAt);
     }
-    if (secret.get(this)._user !== undefined) {
-      this.results = this.results.filter((name) => name.author === secret.get(this)._user
-            || name.to === secret.get(this)._user
+    if (this._user !== undefined) {
+      this.results = this.results.filter((name) => name.author === this._user
+            || name.to === this._user
             || name.to === undefined);
     } else {
       this.results = this.results.filter((name) => name.to === undefined);
@@ -117,13 +117,13 @@ class MessageList {
     return this.pag(skip, top, this.results);
   }
 
-  get id() {
-    this.messagesId = this.mesgList.find((name) => name.id == this.item);
+  get(id) {
+    this.messagesId = this.mesgList.find((name) => name.id == id);
     return this.messagesId.text;
   }
 
   add(msg) {
-    if (this._user !== undefined && this.constructor.validate(msg) === true) {
+    if (this._user && this.constructor.validate(msg)) {
       msg.id = `${+new Date()}`;
       msg.createdAt = new Date();
       msg.author = this._user;
@@ -132,36 +132,35 @@ class MessageList {
     } return false;
   }
 
-  editMessage(id, element) {
-    const clone = Object.assign([], this.mesgList);
-    const index = clone.findIndex((item) => item.id == id);
-    if (secret.get(this)._user === clone[index].author) {
+  edit(id, element) {
+    const index = this.mesgList.findIndex((item) => item.id == id);
+    if (this._user === this.mesgList[index].author) {
       if (element?.text !== undefined) {
         if (index > -1) {
-          console.log('Текст сообщения до редактирования:', clone[index].text);
-          if (this.constructor.validate(clone[index])) {
-            clone[index].text = element.text;
-            console.log('Текст сообщения после редактирования:', clone[index].text);
+          console.log('Текст сообщения до редактирования:', this.mesgList[index].text);
+          if (this.constructor.validate(this.mesgList[index])) {
+            this.mesgList[index].text = element.text;
+            console.log('Текст сообщения после редактирования:', this.mesgList[index].text);
             return true;
           }
         }
       } if (element?.isPersonal !== undefined) {
         if (index > -1) {
           if (element.isPersonal === true && element.to !== undefined) {
-            console.log('Данные сообщения до редактирования:', clone[index].isPersonal, clone[index].to);
-            clone[index].isPersonal = element.isPersonal;
-            clone[index].to = element.to;
-            if (this.constructor.validate(clone[index])) {
-              console.log('Данные сообщения после редактирования:', clone[index].isPersonal, clone[index].to);
+            console.log('Данные сообщения до редактирования:', this.mesgList[index].isPersonal, this.mesgList[index].to);
+            this.mesgList[index].isPersonal = element.isPersonal;
+            this.mesgList[index].to = element.to;
+            if (this.constructor.validate(this.mesgList[index])) {
+              console.log('Данные сообщения после редактирования:', this.mesgList[index].isPersonal, this.mesgList[index].to);
               return true;
             } return false;
           }
           if (element.isPersonal == false) {
-            console.log('Данные сообщения до редактирования: isPersonal =', clone[index].isPersonal, 'to =', clone[index].to);
-            clone[index].isPersonal = element.isPersonal;
-            delete clone[index].to;
-            if (this.constructor.validate(clone[index])) {
-              console.log('Данные сообщения после редактирования: isPersonal =', clone[index].isPersonal);
+            console.log('Данные сообщения до редактирования: isPersonal =', this.mesgList[index].isPersonal, 'to =', this.mesgList[index].to);
+            this.mesgList[index].isPersonal = element.isPersonal;
+            delete this.mesgList[index].to;
+            if (this.constructor.validate(this.mesgList[index])) {
+              console.log('Данные сообщения после редактирования: isPersonal =', this.mesgList[index].isPersonal);
               return true;
             } return false;
           } return false;
@@ -175,7 +174,7 @@ class MessageList {
   remove(id) {
     const clone = Object.assign([], this.mesgList);
     const index = clone.findIndex((item) => item.id == id);
-    if (secret.get(this)._user === clone[index].author && index > -1) {
+    if (this._user === clone[index].author && index > -1) {
       clone.splice(index, 1);
       return true;
     } return false;
@@ -366,8 +365,7 @@ console.log('Первые 10 сообщений от автора\'Anastasia\' �
 console.log('Первые 10 сообщений с текстом \'ещё\'(такое сообщение есть, но его не видно,т.к. оно приватное)', getMes1.getPage(0, 10, { text: 'ещё' }));
 
 // проверка работы метода, позволяющего узнать текст сообщения по id
-getMes3.item = 11;
-console.log('В id №11 хранится сообщение:', getMes3.id);
+console.log('В id №11 хранится сообщение:', getMes3.get(11));
 
 // Проверка работы метода add
 console.log('Введено персональное сообщение, но не указан получатель, поэтому сообщение не добавлено в массив', getMes1.add({
@@ -384,11 +382,11 @@ console.log('Пользователь не авторизован, поэтом�
 }));
 
 // Проверка работы метода edit
-console.log('Пользователь пытается отредактировать не свое сообщение', getMes1.editMessage(5, { text: 'Хочу зефирку' }));
-console.log('Успешно изменен текст сообщения, т.к. это автор этого сообщения', getMes3.editMessage(14, { text: 'Хочу зефирку' }));
-console.log('Сообщение изменено на персональное и добавлен получатель', getMes1.editMessage(7, { isPersonal: true, to: 'Happy user' }));
-console.log('Сообщение изменено на персональное и НЕ добавлен получатель', getMes1.editMessage(15, { isPersonal: true }));
-console.log('Сообщение изменено на общее', getMes1.editMessage(7, { isPersonal: false }));
+console.log('Пользователь пытается отредактировать не свое сообщение', getMes1.edit(5, { text: 'Хочу зефирку' }));
+console.log('Успешно изменен текст сообщения, т.к. это автор этого сообщения', getMes3.edit(14, { text: 'Хочу зефирку' }));
+console.log('Сообщение изменено на персональное и добавлен получатель', getMes1.edit(7, { isPersonal: true, to: 'Happy user' }));
+console.log('Сообщение изменено на персональное и НЕ добавлен получатель', getMes1.edit(15, { isPersonal: true }));
+console.log('Сообщение изменено на общее', getMes1.edit(7, { isPersonal: false }));
 
 //  Проверка работы метода remove
 console.log('Сообщение удалено:', getMes1.remove(7));
