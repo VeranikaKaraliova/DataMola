@@ -201,7 +201,7 @@ const arr = [
     id: '3',
     text: 'Я думаю приготовить что-нибудь особенное сегодня вечером. Что посоветуете?',
     createdAt: new Date('2020-10-12T23:02:15'),
-    author: 'Happy user',
+    author: 'Happy User',
     isPersonal: false,
   },
   {
@@ -273,7 +273,7 @@ const arr = [
     id: '13',
     text: 'Ты сама готовила?',
     createdAt: new Date('2020-10-12T23:14:16'),
-    author: 'Happy user',
+    author: 'Happy User',
     isPersonal: true,
     to: 'Sasha',
   },
@@ -335,6 +335,171 @@ const arr = [
     isPersonal: true,
   },
 ];
+
+// Класс, хранящий коллекцию пользователей и активных пользователей.
+class UserList {
+  constructor(users, activeUsers) {
+    this._users = users;
+    this._activeUsers = activeUsers;
+  }
+
+  get users() {
+    return this._users;
+  }
+
+  get activeUsers() {
+    return this._activeUsers;
+  }
+}
+
+// Класс, который отображает текущего пользователя, если он задан
+class HeaderView {
+  constructor(id = 'authorized-user') {
+    this.id = id;
+  }
+
+  display(user) {
+    const activeUser = document.getElementById(this.id);
+    activeUser.innerHTML = `<a href='#'>${'Войти/Зарегистрироваться'}</a>`;
+    activeUser.style.fontSize = '1rem';
+    const initials = document.getElementById('circle-user');
+    initials.className = 'circle-user-white';
+    initials.innerHTML = '<h3></h3>';
+    if (user) {
+      const activeUser = document.getElementById(this.id);
+      activeUser.innerHTML = `<p>${user}</p>`;
+      const initials = document.getElementById('circle-user');
+      initials.className = 'circle-user';
+      initials.innerHTML = `<h3>${user.match(/\b(\w)/g).join('')}</h3>`;
+    }
+  }
+}
+
+class MessagesView {
+  constructor(id = 'msg-chat') {
+    this.id = id;
+  }
+
+  display(arrMsg = [], user) {
+    for (let i = 0; i < arrMsg.length; i++) {
+      const partMsg = document.getElementById(this.id);
+      if (arrMsg[i].author === user) {
+        const outgoingMsg = document.createElement('div');
+        outgoingMsg.className = 'outgoing_msg';
+        partMsg.appendChild(outgoingMsg);
+        const initialsCont = document.createElement('div');
+        initialsCont.className = 'my_msg_img';
+        initialsCont.innerHTML = `<p>${arrMsg[i].author[0]}</p>`;
+        outgoingMsg.appendChild(initialsCont);
+        const sentMsg = document.createElement('div');
+        sentMsg.className = 'sent-msg';
+        outgoingMsg.appendChild(sentMsg);
+        const withdMsg = document.createElement('div');
+        withdMsg.className = 'sent-width-msg';
+        sentMsg.appendChild(withdMsg);
+        const infoMsg = document.createElement('div');
+        infoMsg.className = 'info-msg';
+        withdMsg.appendChild(infoMsg);
+        const sender = document.createElement('p');
+        sender.className = 'sender';
+        sender.appendChild(document.createTextNode(`${arrMsg[i].author}`));
+        infoMsg.appendChild(sender);
+        const timeDate = document.createElement('p');
+        timeDate.className = 'time_date';
+        timeDate.appendChild(document.createTextNode(`${arrMsg[i].createdAt.toLocaleString()}`));
+        infoMsg.appendChild(timeDate);
+        const button = document.createElement('button');
+        button.className = 'possible-msg';
+        button.appendChild(document.createTextNode(`${'...'}`));
+        infoMsg.appendChild(button);
+        const textMsg = document.createElement('p');
+        textMsg.appendChild(document.createTextNode(`${arrMsg[i].text}`));
+        console.log(textMsg.innerHTML);
+        withdMsg.appendChild(textMsg);
+      }
+      if (arrMsg[i].author !== user) {
+        const msgContainer = document.createElement('div');
+        msgContainer.className = 'incoming_msg';
+        partMsg.appendChild(msgContainer);
+        const initialsCont = document.createElement('div');
+        initialsCont.className = 'incoming_msg_img';
+        initialsCont.innerHTML = `<p>${arrMsg[i].author[0]}</p>`;
+        msgContainer.appendChild(initialsCont);
+        const receivedMsg = document.createElement('div');
+        receivedMsg.className = 'received_msg';
+        const withdMsg = document.createElement('div');
+        withdMsg.className = 'received_withd_msg';
+        receivedMsg.appendChild(withdMsg);
+        const infoMsg = document.createElement('div');
+        infoMsg.className = 'info-msg';
+        withdMsg.appendChild(infoMsg);
+        const sender = document.createElement('p');
+        sender.className = 'sender';
+        sender.appendChild(document.createTextNode(`${arrMsg[i].author}`));
+        infoMsg.appendChild(sender);
+        const timeDate = document.createElement('p');
+        timeDate.className = 'time_date';
+        timeDate.appendChild(document.createTextNode(`${arrMsg[i].createdAt.toLocaleString()}`));
+        infoMsg.appendChild(timeDate);
+        const button = document.createElement('button');
+        button.className = 'possible-msg';
+        button.appendChild(document.createTextNode(`${'...'}`));
+        infoMsg.appendChild(button);
+        const textMsg = document.createElement('p');
+        textMsg.appendChild(document.createTextNode(`${arrMsg[i].text}`));
+        console.log(textMsg.innerHTML);
+        withdMsg.appendChild(textMsg);
+        msgContainer.appendChild(receivedMsg);
+        partMsg.appendChild(msgContainer);
+      }
+    }
+  }
+}
+
+// Класс, для отображения списка активных пользователей
+class ActiveUsersView {
+  constructor(id = 'sidebar-online-user') {
+    this.id = id;
+  }
+
+  display(activeUser = []) {
+    for (let i = 0; i < activeUser.length; i++) {
+      const sidebar = document.getElementById(this.id);
+      const el = document.createElement('div');
+      el.className = 'user-online-container';
+      sidebar.append(el);
+      const initialsCont = document.createElement('div');
+      initialsCont.className = 'circle-user-container';
+      const initials = document.createElement('p');
+      initials.appendChild(document.createTextNode(`${activeUser[i].match(/\b(\w)/g).join('')}`));
+      initialsCont.appendChild(initials);
+      el.appendChild(initialsCont);
+      const nameUser = document.createElement('p');
+      nameUser.className = 'name-user';
+      nameUser.innerHTML = activeUser[i];
+      el.appendChild(nameUser);
+      const online = document.createElement('p');
+      online.className = 'online-user';
+      online.innerHTML = 'online';
+      el.appendChild(online);
+    }
+  }
+}
+
+function setCurrentUser(user) {
+  const nameUser = new HeaderView();
+  nameUser.display(user);
+}
+
+setCurrentUser('Happy User');
+
+// Проверка MessagesView
+const b = new MessagesView();
+b.display(arr, 'Happy User');
+
+// Для проверки ActiveUsersView
+const c = new ActiveUsersView();
+c.display(['Dima', 'Zhenya Zh.', 'Vika L', 'Nina Art', 'Nika I', 'Vs Ko', 'Ivan ', 'Marta', 'Zhenya H.', 'Sasha', 'Pasha', 'Ira', 'Vero', 'Dima']);
 
 // Создание экземпляра класса Messages и проверка
 const msg1 = new Messages('hi', 'Veronika', false);
