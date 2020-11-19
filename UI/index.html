@@ -10,10 +10,10 @@
 </head>
 <body class="body">
         <header>
-            <div class="header-chat">
+            <div class="header-chat" id="active-user">
             <img  class="logo-img" src="logo.png" alt="IsTasty">
-            <p class="authorized-user">Happy User</p>
-            <div class="circle-user"><h3>HU</h3></div>
+            <p class="authorized-user"  id='authorized-user'></p>
+            <div class="circle-user-white" id="circle-user"><h3></h3></div>
             </div>
         </header>
         <nav>
@@ -39,191 +39,14 @@
             </ul>
         </nav>
         <main class="main">
-            <div class="sidebar-online-user">
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>А</p></div> 
-                        <p class="name-user">Анастасия</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИИ</p></div> 
-                        <p class="name-user">Иван Иванович</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Mery</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
-                    <div class="user-online-container">
-                        <div class="circle-user-container"><p>ИП</p></div> 
-                        <p class="name-user">Имя пользователя</p>
-                        <p class="online-user">online</p>
-                    </div>
+            <div class="sidebar-online-user" id="sidebar-online-user">
             </div>
-            <div class="part-msg">
+            <div class="part-msg" id="part-msg"> 
                 <div class="else-msg">
                     <button class="else-msg-btn">Загрузить ещё</button>
                 </div>
-                <div class="msg-chat">
-                    <div class="outgoing_msg"><div class="my_msg_img"><p>HU</p></div>
-                    <div class="sent-msg">
-                    <div class="sent-width-msg">
-                        <div class="info-msg">
-                            <p class="sender">Happy User</p>
-                            <p class="time_date">09/07/2020 13:52</p>
-                            <button class="possible-msg">...</button>
-                        </div> 
-                        <p>Я думаю приготовить что-нибудь особенное сегодня вечером. Что посоветуете?</p>
-                    </div>
-                    </div>   
-                </div>
-                <div class="incoming_msg">
-                    <div class="incoming_msg_img"><p>A</p></div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <div class="info-msg">
-                                <p class="sender">Анастасия</p>
-                                <p class="time_date">09/07/2020 13:53</p>
-                                <button class="possible-msg">...</button>
-                            </div> 
-                            <p class="text-msg">Нужно подумать...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="incoming_msg">
-                    <div class="incoming_msg_img"><p>ИИ</p></div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <div class="info-msg">
-                                <p class="sender">Иван Иванович</p>
-                                <p class="time_date">09/07/2020 13:53</p>
-                                <button class="possible-msg">...</button>
-                            </div>
-                            <p class="text-msg">ты любишь  мясо?</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="outgoing_msg">
-                    <div class="my_msg_img"><p>HU</p></div>
-                    <div class="sent-msg">
-                        <div class="sent-width-msg">
-                            <div class="info-msg">
-                                <p class="sender">Happy User</p>
-                                <p class="time_date">09/07/2020 13:53</p>
-                                <button class="possible-msg">...</button>
-                            </div> 
-                            <p class="text-msg">Я скорее вегетарианец. Я предпочитаю фрукты и овощи. 
-                            В особенности мне нравятся блюда из тыквы или цукини. Ещё я люблю фруктовые салаты.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="incoming_msg">
-                    <div class="incoming_msg_img"><p>M</p></div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <div class="info-msg">
-                                <p class="sender">Mary</p>
-                                <p class="time_date">09/07/2020 13:56</p>
-                                <button class="possible-msg">...</button>
-                            </div>
-                            <p class="text-msg">Как насчет сезонных салатов? Например, летом мне нравится 
-                                есть салаты из свежих помидоров и огурцов с луком и различными приправами.</p>
-                        </div>
-                    </div>
-                </div> 
-                <div class="incoming_msg">
-                    <div class="incoming_msg_img"><p>M</p></div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <div class="info-msg">
-                                <p class="sender">Mary</p>
-                                <p class="time_date">09/07/2020 13:56</p>
-                                <button class="possible-msg">...</button>
-                            </div>
-                        <p class="text-msg">Как насчет сезонных салатов? Например, летом мне нравится 
-                            есть салаты из свежих помидоров и огурцов с луком и различными приправами.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="incoming_msg">
-                    <div class="incoming_msg_img"><p>M</p></div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <div class="info-msg">
-                                <p class="sender">Mary</p>
-                                <p class="time_date">09/07/2020 13:56</p>
-                                <button class="possible-msg">...</button>
-                            </div>
-                            <p class="text-msg">Как насчет сезонных салатов? Например, летом мне нравится 
-                                есть салаты из свежих помидоров и огурцов с луком и различными приправами.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="incoming_msg">
-                    <div class="incoming_msg_img"><p>M</p></div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <div class="info-msg">
-                                <p class="sender">Mary</p>
-                                <p class="time_date">09/07/2020 13:56</p>
-                                <button class="possible-msg">...</button>
-                            </div>
-                            <p class="text-msg">Как насчет сезонных салатов? Например, летом мне нравится 
-                                есть салаты из свежих помидоров и огурцов с луком и различными приправами.</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="msg-chat" id="msg-chat">
+                
                 </div>
                 <div class="send-msg">
                     <ul class="menu-send-msg">
@@ -247,4 +70,5 @@
             </div>
         </footer>   
 </body>
+<script src="script.js"></script>
 </html>

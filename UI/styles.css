@@ -63,6 +63,18 @@ html {
     background: var(--main-yellow);
 }
 
+.circle-user-white {
+    position: fixed;
+    width: var(--circle-main-user); 
+    height: var(--circle-main-user); 
+    right: 5rem; 
+    top: 1rem; 
+
+    border-radius: 2rem; 
+    text-align: center;
+    background: white;
+}
+
 .nav-chat {
     position: fixed;
     top: 5.1rem; 
