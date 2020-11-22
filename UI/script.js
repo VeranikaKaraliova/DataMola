@@ -42,7 +42,7 @@ class MessageList {
   }
 
   set user(user) {
-    this._user = user.trim().toLowerCase();
+    this._user = user;
   }
 
   static validate(msg) {
@@ -80,13 +80,13 @@ class MessageList {
   pag(skip, top, results) {
     if (this.results.length > top) {
       console.log('Длина массива', this.results.length);
-      return this.results.slice(skip, skip + top);
+      return this.results.slice(skip, skip + top).sort((a, b) => a.createdAt - b.createdAt);
     }
     console.log('Длина массива', this.results.length);
-    return this.results.splice(skip, this.results.length);
+    return this.results.splice(skip, this.results.length).sort((a, b) => a.createdAt - b.createdAt);
   }
 
-  getPage(skip = 0, top = 0, filterConfig) {
+  getPage(skip = 0, top = 10, filterConfig) {
     if (filterConfig !== undefined) {
       this.results = Object.assign([], this.mesgList);
       for (const key in filterConfig) {
@@ -102,10 +102,10 @@ class MessageList {
         if (filterConfig?.dataFrom) {
           this.results = this.results.filter((name) => name.createdAt > filterConfig.dataFrom);
         }
-      } this.results.sort((a, b) => a.createdAt - b.createdAt);
+      } this.results.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (filterConfig === undefined || filterConfig === null) {
-      this.results = this.mesgList.sort((a, b) => a.createdAt - b.createdAt);
+      this.results = this.mesgList.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (this._user !== undefined) {
       this.results = this.results.filter((name) => name.author === this._user
@@ -172,10 +172,9 @@ class MessageList {
   }
 
   remove(id) {
-    const clone = Object.assign([], this.mesgList);
-    const index = clone.findIndex((item) => item.id == id);
-    if (this._user === clone[index].author && index > -1) {
-      clone.splice(index, 1);
+    const index = this.mesgList.findIndex((item) => item.id == id);
+    if (this._user === this.mesgList[index].author && index > -1) {
+      this.mesgList.splice(index, 1);
       return true;
     } return false;
   }
@@ -355,19 +354,14 @@ class UserList {
 // Класс, который отображает текущего пользователя, если он задан
 class HeaderView {
   constructor(id = 'authorized-user') {
-    this.id = id;
+    this.activeUser = document.getElementById(id);
   }
 
   display(user) {
-    const activeUser = document.getElementById(this.id);
-    activeUser.innerHTML = `<a href='#'>${'Войти/Зарегистрироваться'}</a>`;
-    activeUser.style.fontSize = '1rem';
-    const initials = document.getElementById('circle-user');
-    initials.className = 'circle-user-white';
-    initials.innerHTML = '<h3></h3>';
+    this.activeUser.innerHTML = `<a href='#' class="login-button">${'Войти|Зарегистрироваться'}</a><div class="circle-user-white"><div>`;
     if (user) {
-      const activeUser = document.getElementById(this.id);
-      activeUser.innerHTML = `<p>${user}</p>`;
+      console.log(user);
+      this.activeUser.innerHTML = `<p>${user}</p>`;
       const initials = document.getElementById('circle-user');
       initials.className = 'circle-user';
       initials.innerHTML = `<h3>${user.match(/\b(\w)/g).join('')}</h3>`;
@@ -386,70 +380,35 @@ class MessagesView {
       if (arrMsg[i].author === user) {
         const outgoingMsg = document.createElement('div');
         outgoingMsg.className = 'outgoing_msg';
+        outgoingMsg.innerHTML = `<div class="outgoing_msg"><div class="my_msg_img"><p>${arrMsg[i].author[0]}</p></div>
+        <div class="sent-msg">
+        <div class="sent-width-msg">
+            <div class="info-msg">
+                <p class="sender">${arrMsg[i].author}</p>
+                <p class="time_date">09/07/2020 13:52</p>
+                <button class="possible-msg">${'...'}</button>
+            </div> 
+            <p>${arrMsg[i].text}</p>
+        </div>
+        </div>`;
         partMsg.appendChild(outgoingMsg);
-        const initialsCont = document.createElement('div');
-        initialsCont.className = 'my_msg_img';
-        initialsCont.innerHTML = `<p>${arrMsg[i].author[0]}</p>`;
-        outgoingMsg.appendChild(initialsCont);
-        const sentMsg = document.createElement('div');
-        sentMsg.className = 'sent-msg';
-        outgoingMsg.appendChild(sentMsg);
-        const withdMsg = document.createElement('div');
-        withdMsg.className = 'sent-width-msg';
-        sentMsg.appendChild(withdMsg);
-        const infoMsg = document.createElement('div');
-        infoMsg.className = 'info-msg';
-        withdMsg.appendChild(infoMsg);
-        const sender = document.createElement('p');
-        sender.className = 'sender';
-        sender.appendChild(document.createTextNode(`${arrMsg[i].author}`));
-        infoMsg.appendChild(sender);
-        const timeDate = document.createElement('p');
-        timeDate.className = 'time_date';
-        timeDate.appendChild(document.createTextNode(`${arrMsg[i].createdAt.toLocaleString()}`));
-        infoMsg.appendChild(timeDate);
-        const button = document.createElement('button');
-        button.className = 'possible-msg';
-        button.appendChild(document.createTextNode(`${'...'}`));
-        infoMsg.appendChild(button);
-        const textMsg = document.createElement('p');
-        textMsg.appendChild(document.createTextNode(`${arrMsg[i].text}`));
-        console.log(textMsg.innerHTML);
-        withdMsg.appendChild(textMsg);
       }
       if (arrMsg[i].author !== user) {
         const msgContainer = document.createElement('div');
         msgContainer.className = 'incoming_msg';
-        partMsg.appendChild(msgContainer);
-        const initialsCont = document.createElement('div');
-        initialsCont.className = 'incoming_msg_img';
-        initialsCont.innerHTML = `<p>${arrMsg[i].author[0]}</p>`;
-        msgContainer.appendChild(initialsCont);
-        const receivedMsg = document.createElement('div');
-        receivedMsg.className = 'received_msg';
-        const withdMsg = document.createElement('div');
-        withdMsg.className = 'received_withd_msg';
-        receivedMsg.appendChild(withdMsg);
-        const infoMsg = document.createElement('div');
-        infoMsg.className = 'info-msg';
-        withdMsg.appendChild(infoMsg);
-        const sender = document.createElement('p');
-        sender.className = 'sender';
-        sender.appendChild(document.createTextNode(`${arrMsg[i].author}`));
-        infoMsg.appendChild(sender);
-        const timeDate = document.createElement('p');
-        timeDate.className = 'time_date';
-        timeDate.appendChild(document.createTextNode(`${arrMsg[i].createdAt.toLocaleString()}`));
-        infoMsg.appendChild(timeDate);
-        const button = document.createElement('button');
-        button.className = 'possible-msg';
-        button.appendChild(document.createTextNode(`${'...'}`));
-        infoMsg.appendChild(button);
-        const textMsg = document.createElement('p');
-        textMsg.appendChild(document.createTextNode(`${arrMsg[i].text}`));
-        console.log(textMsg.innerHTML);
-        withdMsg.appendChild(textMsg);
-        msgContainer.appendChild(receivedMsg);
+        msgContainer.innerHTML = `<div class="incoming_msg">
+                    <div class="incoming_msg_img"><p>${arrMsg[i].author[0]}</p></div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <div class="info-msg">
+                                <p class="sender">${arrMsg[i].author}</p>
+                                <p class="time_date">${arrMsg[i].createdAt.toLocaleString()}</p>
+                                <button class="possible-msg">${'...'}</button>
+                            </div> 
+                            <p class="text-msg">${arrMsg[i].text}</p>
+                        </div>
+                    </div>
+                </div>`;
         partMsg.appendChild(msgContainer);
       }
     }
@@ -467,39 +426,69 @@ class ActiveUsersView {
       const sidebar = document.getElementById(this.id);
       const el = document.createElement('div');
       el.className = 'user-online-container';
+      el.innerHTML = `<div class="circle-user-container"><p>${activeUser[i].match(/\b(\w)/g).join('')}</p></div> 
+                        <p class="name-user">${activeUser[i]}</p>
+                        <p class="online-user">online</p>`;
       sidebar.append(el);
-      const initialsCont = document.createElement('div');
-      initialsCont.className = 'circle-user-container';
-      const initials = document.createElement('p');
-      initials.appendChild(document.createTextNode(`${activeUser[i].match(/\b(\w)/g).join('')}`));
-      initialsCont.appendChild(initials);
-      el.appendChild(initialsCont);
-      const nameUser = document.createElement('p');
-      nameUser.className = 'name-user';
-      nameUser.innerHTML = activeUser[i];
-      el.appendChild(nameUser);
-      const online = document.createElement('p');
-      online.className = 'online-user';
-      online.innerHTML = 'online';
-      el.appendChild(online);
     }
   }
 }
 
+const arrUsers = ['Dima', 'Zhenya Zh.', 'Vika L', 'Nina Art', 'Nika I', 'Vs Ko', 'Ivan ', 'Marta', 'Zhenya H.', 'Sasha', 'Pasha', 'Ira', 'Vero', 'Mila Ro.', 'Kate Ir.', 'Dima'];
+const arrActiveUsers = ['Zhenya Zh.', 'Vika L', 'Nina Art', 'Nika I', 'Vs Ko', 'Ivan ', 'Marta', 'Zhenya H.', 'Sasha', 'Pasha', 'Ira', 'Vero', 'Mila Ro.', 'Kate Ir.'];
+const headerView = new HeaderView('authorized-user');
+const msgList = new MessageList(arr, 'Happy User');
+const messagesView = new MessagesView('msg-chat');
+const activeUsersView = new ActiveUsersView('sidebar-online-user');
+const userList = new UserList(arrUsers, arrActiveUsers);
+
 function setCurrentUser(user) {
-  const nameUser = new HeaderView();
-  nameUser.display(user);
+  msgList.user = user;
+  headerView.display(user);
+  msgList.user = user;
+  msgList.addAll();
+  messagesView.display(msgList.getPage(), user);
 }
 
+function addMessage(msg) {
+  document.querySelector(`.${messagesView.id}`).innerHTML = '';
+  msgList.add(msg);
+  messagesView.display(msgList.getPage(), msgList.user);
+}
+
+function editMessage(id, element) {
+  console.log(msgList.mesgList);
+  document.querySelector(`.${messagesView.id}`).innerHTML = '';
+  msgList.edit(id, element);
+  messagesView.display(msgList.getPage(), msgList.user);
+}
+
+function removeMessage(id) {
+  document.querySelector(`.${messagesView.id}`).innerHTML = '';
+  msgList.remove(id);
+  messagesView.display(msgList.getPage(), msgList.user);
+}
+
+function showMessages(skip = 0, top = 10, filterConfig = {}) {
+  console.log(filterConfig);
+  document.querySelector(`.${messagesView.id}`).innerHTML = '';
+  const i = msgList.getPage(skip, top, filterConfig);
+  messagesView.display(i, msgList.user);
+}
+
+function showActiveUsers() {
+  activeUsersView.display(userList.activeUsers);
+}
+// Проверка работы глобальных методов
 setCurrentUser('Happy User');
-
-// Проверка MessagesView
-const b = new MessagesView();
-b.display(arr, 'Happy User');
-
-// Для проверки ActiveUsersView
-const c = new ActiveUsersView();
-c.display(['Dima', 'Zhenya Zh.', 'Vika L', 'Nina Art', 'Nika I', 'Vs Ko', 'Ivan ', 'Marta', 'Zhenya H.', 'Sasha', 'Pasha', 'Ira', 'Vero', 'Dima']);
+addMessage({ text: 'bye!', isPersonal: false });
+addMessage({ text: 'Как выходные?', isPersonal: false });
+addMessage({ text: 'Все хорошо?', isPersonal: false });
+editMessage(20, { text: 'Хочу зефирку' });
+removeMessage(13);
+showMessages(0, 10, { author: 'Иван' });
+showMessages(0, 3, { dataFrom: new Date('2020-10-12T23:06:01'), dataTo: new Date('2020-10-12T23:19:00') });
+showActiveUsers();
 
 // Создание экземпляра класса Messages и проверка
 const msg1 = new Messages('hi', 'Veronika', false);
