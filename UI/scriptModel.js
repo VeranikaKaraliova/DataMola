@@ -157,40 +157,46 @@ const arr = [
 
 const secret = new WeakMap();
 class Messages {
-  constructor(text, author, isPersonal, to) {
-    secret.set(this, { _id: `${+new Date()}` });
-    secret.set(this, { _createdAt: new Date() });
-    secret.set(this, { _author: author });
-    this.text = text;
-    this.isPersonal = isPersonal;
-    this.to = to;
+  constructor(msg) {
+    this._createdAt = msg.createdAt || msg._createdAt;
+    this._id = msg.id || msg._id;
+    this._author = msg.author || msg._author;
+    this.text = msg.text;
+    this.isPersonal = msg.isPersonal;
+    this.to = msg.to;
   }
-
-  get id() {
-    return secret.get(this)._id = `${+new Date()}`;
-  }
-
-  get createdAt() {
-    return secret.get(this)._createdAt = new Date();
-  }
-
-  get author() {
-    return secret.get(this)._author;
-  }
-
-  set author(author) {
-    secret.get(this)._author = author;
-  }
+    get id() {
+      return this._id;
+    }
+    get author() {
+      return this._author;
+    }
+    get createdAt() {
+      return this._createdAt;
+    }
+    set id(id) {
+       this._id = id;
+    }
+    set author(author) {
+       this._author = author;
+    }
+    set createdAt(createdAt) {
+       this._createdAt = createdAt;
+    }
 }
 
 class MessageList {
-  constructor(arrMsg) {
-    this._arrMsg = arrMsg;
+  constructor() {
+    this._msgList = JSON.parse(localStorage.getItem("msgStorage"), function(key, value){
+      if(key === "createdAt" || key === "_createdAt"){
+        return new Date(value)
+      }return value;
+    }).map((item) => new Messages(item)) ;
+    
     this._user = JSON.parse(localStorage.getItem('user'));
     this.results = [];
     this.item = null;
     this.messagesId = {};
-    this.mesgList = JSON.parse(localStorage.getItem('msgStorage'));
     this.messagesError = [];
   }
 
@@ -200,6 +206,14 @@ class MessageList {
 
   set user(user) {
     this._user = user;
+  }
+ 
+  get msgList(){
+    return this._msgList;
+  }
+
+  set msgList(msgList) {
+    this._msgList = msgList;
   }
 
   static validate(msg) {
@@ -222,8 +236,8 @@ class MessageList {
         this._author = item.author;
         this.isPersonal = item.isPersonal;
         this.to = item.to;
-        this.mesgList.push(item);
-        localStorage.setItem('msgStorage', JSON.stringify(this.mesgList));
+        this.msgList.push(item);
+        localStorage.setItem('msgStorage', JSON.stringify(this.msgList));
       } else {
         this.messagesError.push(item);
       }
@@ -237,18 +251,17 @@ class MessageList {
   }
 
   pag(skip, top, results) {
-    // console.log(results= this.results)
     if (this.results.length > top) {
-      // console.log('Длина массива', this.results.length);
-      return this.results.slice(skip, skip + top).sort((a, b) => a.createdAt - b.createdAt);
+      this.results = this.results.sort((a, b) => b.createdAt - a.createdAt).slice(skip, skip + top);
+      return this.results.sort((a, b) => a.createdAt - b.createdAt)
     }
-    // console.log('Длина массива', this.results.length);
-    return this.results.splice(skip, this.results.length).sort((a, b) => a.createdAt - b.createdAt);
+    this.results = this.results.sort((a, b) => b.createdAt - a.createdAt).slice(skip, skip + top);
+    return this.results.sort((a, b) => a.createdAt - b.createdAt)
   }
 
   getPage(skip = 0, top = 10, filterConfig) {
+    this.results = Object.assign([], this.msgList);
     if (filterConfig !== undefined) {
-      this.results = Object.assign([], this.mesgList);
       for (const key in filterConfig) {
         if (filterConfig?.author) {
           this.results = this.results.filter((name) => (name.author.toLowerCase().includes(filterConfig.author.toLowerCase())));
@@ -265,7 +278,7 @@ class MessageList {
       } this.results.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (filterConfig === undefined || filterConfig === null) {
-      this.results = this.mesgList.sort((a, b) => b.createdAt - a.createdAt);
+      this.results = this.results.sort((a, b) => -b.createdAt - a.createdAt);
     }
     if (this._user !== undefined || '') {
       this.results = this.results.filter((name) => name.author === this._user
@@ -278,18 +291,22 @@ class MessageList {
   }
 
   get(id) {
-    this.messagesId = this.mesgList.find((name) => name.id == id);
+    this.messagesId = this.msgList.find((name) => name.id == id);
     return this.messagesId.text;
   }
 
+  save(){
+    localStorage.setItem('msgStorage', JSON.stringify(this.msgList));
+  }
+
   add(msg) {
-    if (this._user && this.constructor.validate(msg)) {
+    if (this._user && MessageList.validate(msg)) {
       msg.id = `${+new Date()}`;
       msg.createdAt = new Date();
       msg.author = this._user;
       const newMsg = new Messages(msg);
-      this.mesgList.push(newMsg);
-      localStorage.setItem('msgStorage', JSON.stringify(msg));
+      this.msgList.push(newMsg);
+      this.save();
       return true;
     } return false;
   }

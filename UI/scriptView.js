@@ -5,19 +5,28 @@ class HeaderView {
 
   display(user) {
     if (!user) {
-      this.activeUser.innerHTML = `<a href='#' class="login-button">${'Войти'}|</a><a href='#' class="regisrt-button">${'Зарегистрироваться'}</a><div class="circle-user-white"><div>`;
+      const loginRegistr = document.getElementById('login-registr')
+      loginRegistr.style.display = "block";
       const removeNode = document.getElementById('send-msg');
       removeNode.style.display = 'none';
+      const activeUser = document.getElementById('authorized-user')
+        activeUser.style.display="none"
+        const circleUser = document.getElementById('circle-user')
+        circleUser.style.display="none"
     }
-
-    if (user) {
-      console.log(user);
+    else {
       this.activeUser.innerHTML = `<p>${user}</p>`;
       const initials = document.getElementById('circle-user');
       initials.className = 'circle-user';
       initials.innerHTML = `<h3>${user.match(/\b(\w)/g).join('')}</h3>`;
       const removeNode = document.getElementById('send-msg');
       removeNode.style.display = 'flex';
+      const loginRegistr = document.getElementById('login-registr')
+      loginRegistr.style.display = "none";
+      const activeUser = document.getElementById('authorized-user')
+        activeUser.style.display="flex"
+        const circleUser = document.getElementById('circle-user')
+        circleUser.style.display="block"
     }
   }
 }
@@ -27,18 +36,20 @@ class MessagesView {
   }
 
   display(arrMsg = [], user) {
+    console.log(arrMsg)
     const partMsg = document.getElementById(this.id);
     partMsg.innerHTML = '';
     for (let i = 0; i < arrMsg.length; i++) {
       if (arrMsg[i].author === user) {
+        const initials = arrMsg[i].author[0];
         const outgoingMsg = document.createElement('div');
         outgoingMsg.className = 'outgoing_msg';
-        outgoingMsg.innerHTML = `<div class="outgoing_msg"><div class="my_msg_img"><p>${arrMsg[i].author[0]}</p></div>
+        outgoingMsg.innerHTML = `<div class="outgoing_msg"><div class="my_msg_img"><p>${initials}</p></div>
         <div class="sent-msg">
         <div class="sent-width-msg">
             <div class="info-msg" id="info-msg">
                 <p class="sender">${arrMsg[i].author}</p>
-                <p class="time_date">09/07/2020 13:52</p>
+                <p class="time_date">${arrMsg[i].createdAt.toLocaleString()}</p>
                 <button class="possible-msg" id= "possible-msg">${'...'}</button>
             </div> 
             <div class="change-msg">
@@ -53,16 +64,16 @@ class MessagesView {
         partMsg.appendChild(outgoingMsg);
       }
       if (arrMsg[i].author !== user) {
+        const initials = arrMsg[i].author[0];
         const msgContainer = document.createElement('div');
         msgContainer.className = 'incoming_msg';
         msgContainer.innerHTML = `<div class="incoming_msg">
-                                    <div class="incoming_msg_img"><p>${arrMsg[i].author[0]}</p></div>
+                                    <div class="incoming_msg_img"><p>${initials}</p></div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
                                             <div class="info-msg">
                                                 <p class="sender">${arrMsg[i].author}</p>
                                                 <p class="time_date">${arrMsg[i].createdAt.toLocaleString()}</p>
-                                                <button class="possible-msg">${'...'}</button>
                                             </div> 
                                             <p class="text-msg">${arrMsg[i].text}</p>
                                         </div>
