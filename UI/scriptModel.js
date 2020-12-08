@@ -158,41 +158,47 @@ const arr = [
 const secret = new WeakMap();
 class Messages {
   constructor(msg) {
-    this._createdAt = msg.createdAt || msg._createdAt;
+    this._createdAt = new Date(msg.createdAt) || new Date(msg._createdAt);
     this._id = msg.id || msg._id;
     this._author = msg.author || msg._author;
     this.text = msg.text;
     this.isPersonal = msg.isPersonal;
     this.to = msg.to;
   }
-    get id() {
-      return this._id;
-    }
-    get author() {
-      return this._author;
-    }
-    get createdAt() {
-      return this._createdAt;
-    }
-    set id(id) {
-       this._id = id;
-    }
-    set author(author) {
-       this._author = author;
-    }
-    set createdAt(createdAt) {
-       this._createdAt = createdAt;
-    }
+
+  get id() {
+    return this._id;
+  }
+
+  get author() {
+    return this._author;
+  }
+
+  get createdAt() {
+    return this._createdAt;
+  }
+
+  set id(id) {
+    this._id = id;
+  }
+
+  set author(author) {
+    this._author = author;
+  }
+
+  set createdAt(createdAt) {
+    this._createdAt = createdAt;
+  }
 }
 
 class MessageList {
   constructor() {
-    this._msgList = JSON.parse(localStorage.getItem("msgStorage"), function(key, value){
-      if(key === "createdAt" || key === "_createdAt"){
-        return new Date(value)
-      }return value;
-    }).map((item) => new Messages(item)) ;
-    
+    this._msgList = JSON.parse(localStorage.getItem('msgStorage'), (key, value) => {
+      if (key === 'createdAt' || key === '_createdAt') {
+        return new Date(value);
+      } return value;
+    }).map((item) => new Messages(item));
+
     this._user = JSON.parse(localStorage.getItem('user'));
     this.results = [];
     this.item = null;
@@ -207,8 +213,8 @@ class MessageList {
   set user(user) {
     this._user = user;
   }
- 
-  get msgList(){
+
+  get msgList() {
     return this._msgList;
   }
 
@@ -253,10 +259,10 @@ class MessageList {
   pag(skip, top, results) {
     if (this.results.length > top) {
       this.results = this.results.sort((a, b) => b.createdAt - a.createdAt).slice(skip, skip + top);
-      return this.results.sort((a, b) => a.createdAt - b.createdAt)
+      return this.results.sort((a, b) => a.createdAt - b.createdAt);
     }
     this.results = this.results.sort((a, b) => b.createdAt - a.createdAt).slice(skip, skip + top);
-    return this.results.sort((a, b) => a.createdAt - b.createdAt)
+    return this.results.sort((a, b) => a.createdAt - b.createdAt);
   }
 
   getPage(skip = 0, top = 10, filterConfig) {
@@ -295,7 +301,7 @@ class MessageList {
     return this.messagesId.text;
   }
 
-  save(){
+  save() {
     localStorage.setItem('msgStorage', JSON.stringify(this.msgList));
   }
 
