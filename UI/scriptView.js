@@ -62,7 +62,7 @@ class MessagesView {
             </div>`;
         partMsg.appendChild(outgoingMsg);
       }
-      if (arrMsg[i].author !== user) {
+      if (arrMsg[i].author !== user && arrMsg[i].isPersonal === true) {
         const initials = arrMsg[i].author[0];
         const msgContainer = document.createElement('div');
         msgContainer.className = 'incoming_msg';
@@ -70,17 +70,35 @@ class MessagesView {
                                     <div class="incoming_msg_img"><p>${initials}</p></div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
-                                            <div class="info-msg">
+                                            <div class="info-msg" id="info-msg">
                                                 <p class="sender">${arrMsg[i].author}</p>
                                                 <p class="time_date">${arrMsg[i].createdAt.getHours()}:${arrMsg[i].createdAt.getMinutes()}</p>
-                                                <p class="privat"></p>
+                                                <p class='privat'>only for me</p>
                                             </div> 
                                             <p class="text-msg">${arrMsg[i].text}</p>
-                                            
                                         </div>
                                     </div>
                                   </div>`;
         partMsg.appendChild(msgContainer);
+      }
+      if (arrMsg[i].author !== user && arrMsg[i].isPersonal === false) {
+        const initials = arrMsg[i].author[0];
+        const msgContainer = document.createElement('div');
+        msgContainer.className = 'incoming_msg';
+        msgContainer.innerHTML = `<div class="incoming_msg">
+                                    <div class="incoming_msg_img"><p>${initials}</p></div>
+                                    <div class="received_msg">
+                                        <div class="received_withd_msg">
+                                            <div class="info-msg" id="info-msg">
+                                                <p class="sender">${arrMsg[i].author}</p>
+                                                <p class="time_date">${arrMsg[i].createdAt.getHours()}:${arrMsg[i].createdAt.getMinutes()}</p>
+                                            </div> 
+                                            <p class="text-msg">${arrMsg[i].text}</p> 
+                                        </div>
+                                    </div>
+                                  </div>`;
+        partMsg.appendChild(msgContainer);
+        const infoMsg = document.getElementById('info-msg');
       }
     }
   }

@@ -282,9 +282,6 @@ html {
   border: 1px solid var(--main-green);
   background-color: white;
   z-index: 100;
-
-  
-  
 }
 
 .change-msg > ul {
@@ -294,9 +291,9 @@ html {
   margin: 0;
 }
 
-#privat{
+.privat{
   margin: 0 2rem 0 0;
-  display: none;
+  display: block;
 
   font-size: 1rem;
   color: #747474;  
