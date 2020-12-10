@@ -77,7 +77,7 @@ class ChatApiService {
     this.activeUsersView = new ActiveUsersView('sidebar-online-user');
     this.privatMsgView = new PrivatMsgView('select-privat-user');
     this.to = null;
-    this.isPersonal= false;
+    this.isPersonal = false;
     this.top = 10;
   }
 
@@ -198,6 +198,20 @@ class ChatApiService {
       this.messages();
     });
   }
+
+  delete(id) {
+    const url = `https://jslabdb.datamola.com/messages/${id}`;
+    this.token = JSON.parse(localStorage.getItem('token'));
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Bearer ${this.token}`,
+      },
+    }).then((res) => {
+      return res.json();
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -266,28 +280,34 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const btnSendMsg = document.querySelector('.msg-send-btn');
-      btnSendMsg.addEventListener('click', () => {
-      const inputSendMsg = document.getElementById('write-msg');
-      const select = document.querySelector('.select-privat-user')
-        if(select.value === "Публичное"){
-           chatApiService.isPersonal = false;
-          chatApiService.to = null
-        }
-        if(select.value !== "Публичное"){
-          chatApiService.isPersonal = true;
-          chatApiService.to = select.value
-        }
-      chatApiService.messagesSend({ text: inputSendMsg.value, author: chatApiService.user, isPersonal: chatApiService.isPersonal, to:chatApiService.to });
-      inputSendMsg.value = '';
-      });
+  btnSendMsg.addEventListener('click', () => {
+    const inputSendMsg = document.getElementById('write-msg');
+    const select = document.querySelector('.select-privat-user');
+    if (select.value === 'Публичное') {
+      chatApiService.isPersonal = false;
+      chatApiService.to = null;
+    }
+    if (select.value !== 'Публичное') {
+      chatApiService.isPersonal = true;
+      chatApiService.to = select.value;
+    }
+    chatApiService.messagesSend({
+      text: inputSendMsg.value, author: chatApiService.user, isPersonal: chatApiService.isPersonal, to: chatApiService.to,
+    });
+    inputSendMsg.value = '';
+  });
 
   const possibleMsg = document.querySelector('.msg-chat');
   possibleMsg.addEventListener('click', (event) => {
-    const { target } = event;
-    if (target.tagName === 'BUTTON') {
-      document.getElementById('change-msg').style.display = 'block';
-    } else {
-      document.getElementById('change-msg').style.display = 'none';
+    let target = event.target;
+    if (target.className === 'possible-msg') {
+      document.getElementById(`${event.target.parentNode.parentNode.parentNode.parentNode.id}1`).style.display = 'block';
+    }
+    if (target.className !== 'delete' && target.className !== 'possible-msg') {
+      document.getElementById(`${event.target.parentNode.parentNode.parentNode.id}1`).style.display = 'none';
+    }
+    if (target.className === 'delete') {
+      chatApiService.delete(event.target.parentNode.parentNode.parentNode.id);
     }
   });
 

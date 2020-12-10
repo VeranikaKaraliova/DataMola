@@ -43,7 +43,7 @@ class MessagesView {
         const initials = arrMsg[i].author[0];
         const outgoingMsg = document.createElement('div');
         outgoingMsg.className = 'outgoing_msg';
-        outgoingMsg.innerHTML = `<div class="outgoing_msg" id="outgoing_msg"><div class="my_msg_img"><p>${initials}</p></div>
+        outgoingMsg.innerHTML = `<div class="outgoing_msg" id="${arrMsg[i].id}"><div class="my_msg_img"><p>${initials}</p></div>
         <div class="sent-msg">
         <div class="sent-width-msg">
             <div class="info-msg" id="info-msg">
@@ -54,7 +54,7 @@ class MessagesView {
             <p class="text">${arrMsg[i].text}</p>
         </div>
         </div>
-        <div class="change-msg" id="change-msg">
+        <div class="change-msg" id="${`${arrMsg[i].id}1`}">
               <ul>
                 <li class="edit" id='edit'>Редактировать</li>
                 <li class="delete" id='delete'>Ударить</li>
@@ -66,7 +66,7 @@ class MessagesView {
         const initials = arrMsg[i].author[0];
         const outgoingMsg = document.createElement('div');
         outgoingMsg.className = 'outgoing_msg';
-        outgoingMsg.innerHTML = `<div class="outgoing_msg" id="outgoing_msg"><div class="my_msg_img"><p>${initials}</p></div>
+        outgoingMsg.innerHTML = `<div class="outgoing_msg" id="${arrMsg[i].id}"><div class="my_msg_img"><p>${initials}</p></div>
         <div class="sent-msg">
         <div class="sent-width-msg">
             <div class="info-msg" id="info-msg">
@@ -78,7 +78,7 @@ class MessagesView {
             <p class="text">${arrMsg[i].text}</p>
         </div>
         </div>
-        <div class="change-msg" id="change-msg">
+        <div class="change-msg" id="${`${arrMsg[i].id}1`}">
               <ul>
                 <li class="edit" id='edit'>Редактировать</li>
                 <li class="delete" id='delete'>Ударить</li>
@@ -149,19 +149,19 @@ class ActiveUsersView {
   }
 }
 
-class PrivatMsgView{
+class PrivatMsgView {
   constructor(id = 'select-privat-user') {
     this.id = id;
   }
 
-  display(allUser){
+  display(allUser) {
     const selectPrivatUser = document.getElementById(this.id);
-    selectPrivatUser.innerHTML = `<option class="option" selected>Публичное</option>`
-    for(let i = 0; i < allUser.length; i++) {
-      const optionPrivatUser = document.createElement('option')
-      optionPrivatUser.value = allUser[i].name
-      optionPrivatUser.innerHTML = `${allUser[i].name}`
-      selectPrivatUser.appendChild(optionPrivatUser)
+    selectPrivatUser.innerHTML = '<option class="option" selected>Публичное</option>';
+    for (let i = 0; i < allUser.length; i++) {
+      const optionPrivatUser = document.createElement('option');
+      optionPrivatUser.value = allUser[i].name;
+      optionPrivatUser.innerHTML = `${allUser[i].name}`;
+      selectPrivatUser.appendChild(optionPrivatUser);
     }
   }
 }
