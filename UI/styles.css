@@ -418,6 +418,21 @@ html {
   flex-direction: row;
 }
 
+.select-privat-user{
+  border: none;
+  margin-top: -1rem;
+}
+
+.private-msg {
+  display: inline-flex;
+  padding: 0.2rem 3rem 0 0;
+  width: 10rem;
+}
+
+.private-msg > form >select{
+  width: 7rem;
+}
+
 .add-img {
   padding: 0 1rem 0;
   opacity: 50%;

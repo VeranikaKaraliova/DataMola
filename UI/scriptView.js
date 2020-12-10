@@ -39,11 +39,11 @@ class MessagesView {
     const partMsg = document.getElementById(this.id);
     partMsg.innerHTML = '';
     for (let i = 0; i < arrMsg.length; i++) {
-      if (arrMsg[i].author === user) {
+      if (arrMsg[i].author === user && arrMsg[i].isPersonal === false) {
         const initials = arrMsg[i].author[0];
         const outgoingMsg = document.createElement('div');
         outgoingMsg.className = 'outgoing_msg';
-        outgoingMsg.innerHTML = `<div class="outgoing_msg"><div class="my_msg_img"><p>${initials}</p></div>
+        outgoingMsg.innerHTML = `<div class="outgoing_msg" id="${arrMsg[i].id}"><div class="my_msg_img"><p>${initials}</p></div>
         <div class="sent-msg">
         <div class="sent-width-msg">
             <div class="info-msg" id="info-msg">
@@ -51,13 +51,37 @@ class MessagesView {
                 <p class="time_date">${arrMsg[i].createdAt.getHours()}:${arrMsg[i].createdAt.getMinutes()}</p>
                 <button class="possible-msg" id= "possible-msg">${'...'}</button>
             </div> 
-            <p>${arrMsg[i].text}</p>
+            <p class="text">${arrMsg[i].text}</p>
         </div>
         </div>
-        <div class="change-msg" id="change-msg">
+        <div class="change-msg" id="${`${arrMsg[i].id}1`}">
               <ul>
-                <li id='edit'>Редактировать</li>
-                <li id='delete'>Ударить</li>
+                <li class="edit" id='edit'>Редактировать</li>
+                <li class="delete" id='delete'>Ударить</li>
+              </ul>
+            </div>`;
+        partMsg.appendChild(outgoingMsg);
+      }
+      if (arrMsg[i].author === user && arrMsg[i].isPersonal === true) {
+        const initials = arrMsg[i].author[0];
+        const outgoingMsg = document.createElement('div');
+        outgoingMsg.className = 'outgoing_msg';
+        outgoingMsg.innerHTML = `<div class="outgoing_msg" id="${arrMsg[i].id}"><div class="my_msg_img"><p>${initials}</p></div>
+        <div class="sent-msg">
+        <div class="sent-width-msg">
+            <div class="info-msg" id="info-msg">
+                <p class="sender">${arrMsg[i].author}</p>
+                <p class="time_date">${arrMsg[i].createdAt.getHours()}:${arrMsg[i].createdAt.getMinutes()}</p>
+                <p class='privat'>to:${arrMsg[i].to}</p>
+                <button class="possible-msg" id= "possible-msg">${'...'}</button>
+            </div> 
+            <p class="text">${arrMsg[i].text}</p>
+        </div>
+        </div>
+        <div class="change-msg" id="${`${arrMsg[i].id}1`}">
+              <ul>
+                <li class="edit" id='edit'>Редактировать</li>
+                <li class="delete" id='delete'>Ударить</li>
               </ul>
             </div>`;
         partMsg.appendChild(outgoingMsg);
@@ -121,6 +145,23 @@ class ActiveUsersView {
                           <p class="online-user">online</p>`;
         sidebar.append(el);
       }
+    }
+  }
+}
+
+class PrivatMsgView {
+  constructor(id = 'select-privat-user') {
+    this.id = id;
+  }
+
+  display(allUser) {
+    const selectPrivatUser = document.getElementById(this.id);
+    selectPrivatUser.innerHTML = '<option class="option" selected>Публичное</option>';
+    for (let i = 0; i < allUser.length; i++) {
+      const optionPrivatUser = document.createElement('option');
+      optionPrivatUser.value = allUser[i].name;
+      optionPrivatUser.innerHTML = `${allUser[i].name}`;
+      selectPrivatUser.appendChild(optionPrivatUser);
     }
   }
 }
