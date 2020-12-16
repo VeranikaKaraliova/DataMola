@@ -216,11 +216,9 @@ class ChatApiService {
         Authorization: `Bearer ${this.token}`,
       },
       body: JSON.stringify(data),
-    }).then((res) => res.json()).then((res) => {
-      this.messages();
-    })
-      .catch(() => {
-        this.error();
+    }).then((res) => res.json())
+      .then((res) => {
+        this.messages();
       });
   }
 
@@ -233,10 +231,7 @@ class ChatApiService {
         'Content-Type': 'application/json;charset=utf-8',
         Authorization: `Bearer ${this.token}`,
       },
-    }).then((res) => res.json())
-      .catch(() => {
-        this.error();
-      });
+    }).then((res) => res.json());
   }
 }
 
