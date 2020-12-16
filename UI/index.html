@@ -21,6 +21,16 @@
             </div>
             <div class="exit" id="exit"> Выход </div>
         </header>
+        <div class="error">
+            <div class="error-text-box">
+                <p class="ups">ОЙ</p>
+                <p class="text-error">Похоже, что-то пошло не так.</p>
+                <button class="btn-registr" id="come-main-page">Вернуться на главную</button>
+            </div>
+            <div class="img-box">
+                <img src="error.png" alt="" class="error-img">
+            </div>
+        </div>
         <div class="login">
             <img  class="img-backgraund" src="fon.png" alt="IsTasty">
                 <div>
@@ -28,8 +38,8 @@
                 </div>
                 <div class="form-container">
                     <form action="" class="form-login" id="form-login">
-                        <input type="text" name="name" id="login" placeholder="Введите логин">
-                        <input type="password" name="pass" id="password" placeholder="Введите пароль">
+                        <input type="text" name="name" id="login" required placeholder="Введите логин">
+                        <input type="password" name="pass" id="password" required placeholder="Введите пароль">
                         <button class="btn-registr" type="submit">Вход</button>
                     </form>
                 </div>
@@ -48,10 +58,10 @@
                 </div>
                 <div class="form-container">
                     <form action="" class="form-registr" id="form-registr">
-                    <input type="text" name="name-user" id="name-user" placeholder="Введите имя">
-                    <input type="text" name="name" id="login" placeholder="Введите логин">
-                    <input type="password" name="pass" id="password" placeholder="Введите пароль">
-                    <input type="password"  placeholder="Повторите пароль">
+                    <input type="text" name="name-user" id="name-user" required placeholder="Введите имя">
+                    <input type="text" name="name" id="login" required placeholder="Введите логин">
+                    <input type="password" name="pass" id="password" required placeholder="Введите пароль">
+                    <input type="password" required placeholder="Повторите пароль">
                     <button class="btn-registr" type="submit">Зарегистрироваться</button>
                     </form>
                 </div>

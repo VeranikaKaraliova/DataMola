@@ -81,6 +81,11 @@ class ChatApiService {
     this.top = 10;
   }
 
+  error() {
+    const error = document.querySelector('.error');
+    error.style.display = 'flex';
+  }
+
   messages(skip = 0, elseTop = 0) {
     let { top } = this;
     top += elseTop;
@@ -113,6 +118,10 @@ class ChatApiService {
       .then((result) => result.json()).then((data) => {
         this.activeUsersView.display(data, this.user);
         this.privatMsgView.display(data);
+      })
+      .catch(() => {
+        localStorage.setItem('token', JSON.stringify(''));
+        this.error();
       });
   }
 
@@ -131,7 +140,12 @@ class ChatApiService {
     return fetch(url, {
       method: 'POST',
       body: formData,
-    });
+    })
+      .catch(() => {
+        localStorage.setItem('token', JSON.stringify(''));
+        localStorage.setItem('user', JSON.stringify(''));
+        this.error();
+      });
   }
 
   login(name, pass) {
@@ -165,6 +179,11 @@ class ChatApiService {
         this.headerView.display(this.user);
         this.activeUsersView.display(this.users(), this.user);
         this.messages();
+      })
+      .catch(() => {
+        localStorage.setItem('token', JSON.stringify(''));
+        localStorage.setItem('user', JSON.stringify(''));
+        this.error();
       });
   }
 
@@ -181,6 +200,9 @@ class ChatApiService {
       })
       .then((res) => {
         this.headerView.display(res);
+      })
+      .catch(() => {
+        this.error();
       });
   }
 
@@ -196,7 +218,10 @@ class ChatApiService {
       body: JSON.stringify(data),
     }).then((res) => res.json()).then((res) => {
       this.messages();
-    });
+    })
+      .catch(() => {
+        this.error();
+      });
   }
 
   delete(id) {
@@ -208,9 +233,10 @@ class ChatApiService {
         'Content-Type': 'application/json;charset=utf-8',
         Authorization: `Bearer ${this.token}`,
       },
-    }).then((res) => {
-      return res.json();
-    });
+    }).then((res) => res.json())
+      .catch(() => {
+        this.error();
+      });
   }
 }
 
@@ -299,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const possibleMsg = document.querySelector('.msg-chat');
   possibleMsg.addEventListener('click', (event) => {
-    let target = event.target;
+    const { target } = event;
     if (target.className === 'possible-msg') {
       document.getElementById(`${event.target.parentNode.parentNode.parentNode.parentNode.id}1`).style.display = 'block';
     }
@@ -314,5 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const elseMsgBtn = document.getElementById('else-msg-btn');
   elseMsgBtn.addEventListener('click', () => {
     chatApiService.messages(0, 10);
+  });
+
+  const comeMainPage = document.getElementById('come-main-page');
+  comeMainPage.addEventListener('click', (event) => {
+    const error = document.querySelector('.error');
+    error.style.display = 'none';
   });
 });
